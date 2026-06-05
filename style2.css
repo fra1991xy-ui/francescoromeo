@@ -419,3 +419,309 @@ header p { margin: 5px 0 0 0; font-size: 0.9rem; opacity: 0.9; }
     color: #64748b !important;
     opacity: 1 !important;
 }
+/* ========================= */
+/* PDF A4 CORPORATE ROMEO */
+/* ========================= */
+
+#modello-pdf-invisibile {
+    background: white !important;
+    color: black !important;
+}
+
+.pdf-a4 {
+    width: 210mm;
+    min-height: 297mm;
+    background: white;
+    color: black;
+    padding: 16mm 14mm 12mm 14mm;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9pt;
+    position: relative;
+}
+
+.pdf-header-logo {
+    width: 100%;
+    margin-bottom: 8mm;
+}
+
+.pdf-logo-romeo {
+    width: 170mm;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.pdf-riga-intestazione {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 8mm;
+    align-items: start;
+    margin-bottom: 5mm;
+}
+
+.pdf-codice {
+    font-size: 8.5pt;
+    color: black;
+}
+
+.pdf-destinatari {
+    text-align: right;
+    font-size: 8pt;
+    line-height: 1.35;
+}
+
+.pdf-destinatari p {
+    margin: 0 0 2mm 0;
+}
+
+.pdf-barra-verde {
+    background: #92d050;
+    border: 1px solid black;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+    padding: 2mm;
+    font-size: 8pt;
+}
+
+.pdf-box-principale {
+    display: grid;
+    grid-template-columns: 64% 36%;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    min-height: 58mm;
+}
+
+.pdf-colonna-sx {
+    border-right: 1px solid black;
+    padding: 2mm;
+}
+
+.pdf-colonna-dx {
+    padding: 2mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pdf-titolo-sezione {
+    font-weight: bold;
+    margin-bottom: 2mm;
+}
+
+.pdf-elenco-attivita {
+    font-size: 8pt;
+    line-height: 1.35;
+}
+
+.pdf-blocco-impresa {
+    margin-top: 5mm;
+    font-size: 8pt;
+    line-height: 1.4;
+}
+
+.pdf-planimetria {
+    width: 100%;
+    height: 52mm;
+    object-fit: contain;
+}
+
+.pdf-barra-piccola {
+    margin-top: 0;
+    font-size: 8pt;
+    padding: 1.5mm;
+}
+
+.pdf-sopralluogo {
+    margin-top: 18mm;
+    background: #92d050;
+    width: 120mm;
+    padding: 2mm;
+    font-size: 10pt;
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+}
+
+.pdf-checkbox {
+    display: inline-block;
+    width: 4mm;
+    height: 4mm;
+    border: 1px solid black;
+    background: #d9d9d9;
+}
+
+.pdf-spazio-bianco {
+    height: 38mm;
+}
+
+.pdf-titolo-basso {
+    font-weight: bold;
+    font-size: 8pt;
+    margin-bottom: 5mm;
+}
+
+.pdf-footer {
+    position: absolute;
+    left: 14mm;
+    right: 14mm;
+    bottom: 10mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.pdf-certificazioni {
+    width: 58mm;
+    height: auto;
+}
+
+.pdf-footer-testo {
+    text-align: right;
+    font-size: 6.5pt;
+    line-height: 1.25;
+    color: #555;
+}
+
+/* ========================= */
+/* PAGINA 2 */
+/* ========================= */
+
+.pdf-tabella-verde {
+    border: 1px solid black;
+    margin-top: 3mm;
+}
+
+.pdf-riga-fabbricato {
+    background: #92d050;
+    border-bottom: 1px solid black;
+    padding: 1.5mm 2mm;
+    font-size: 8pt;
+}
+
+.pdf-relazione {
+    padding: 2mm;
+    font-size: 8pt;
+    line-height: 1.35;
+    min-height: 48mm;
+}
+
+.pdf-relazione strong {
+    display: block;
+    margin-top: 1.5mm;
+}
+
+.pdf-relazione div {
+    margin-bottom: 1.5mm;
+}
+
+.pdf-tempistiche {
+    border-top: 1px solid black;
+    padding: 1.5mm 2mm;
+    font-size: 7.5pt;
+    line-height: 1.25;
+}
+
+.pdf-area-foto {
+    display: grid;
+    grid-template-columns: 9mm 1fr 1fr;
+    border-top: 1px solid black;
+    min-height: 82mm;
+}
+
+.pdf-label-verticale {
+    background: #92d050;
+    border-right: 1px solid black;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    text-align: center;
+    font-weight: bold;
+    font-size: 8pt;
+    padding: 2mm 0;
+}
+
+.pdf-foto-box {
+    position: relative;
+    border-right: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4mm;
+}
+
+.pdf-foto-box:last-child {
+    border-right: none;
+}
+
+.pdf-foto-img {
+    max-width: 100%;
+    max-height: 68mm;
+    object-fit: contain;
+}
+
+.pdf-placeholder {
+    width: 38mm;
+    height: 32mm;
+    border: 1px solid black;
+    font-size: 24pt;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Times New Roman", serif;
+    color: black;
+    background: white;
+}
+
+.pdf-caption {
+    position: absolute;
+    bottom: 2mm;
+    left: 0;
+    right: 0;
+    text-align: center;
+    border-top: 1px solid black;
+    padding-top: 1.5mm;
+    font-size: 8pt;
+}
+
+.pdf-sospese {
+    margin-top: 3mm;
+    font-size: 8pt;
+}
+
+.pdf-tabella-attivita {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1mm;
+    font-size: 7pt;
+}
+
+.pdf-tabella-attivita th {
+    background: #92d050;
+    border: 1px solid black;
+    padding: 1.5mm;
+    text-align: left;
+}
+
+.pdf-tabella-attivita td {
+    border: 1px solid black;
+    padding: 1.5mm;
+}
+
+.pdf-firma-finale {
+    margin-top: 8mm;
+    text-align: right;
+    font-size: 8pt;
+}
+
+.pdf-footer-p2 {
+    bottom: 8mm;
+}
+
+/* Evita comportamenti strani durante generazione PDF */
+#modello-pdf-invisibile * {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
