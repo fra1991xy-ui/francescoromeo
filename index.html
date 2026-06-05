@@ -112,197 +112,127 @@
         </section>
     </div>
     <!-- 🖨️ STRUTTURA GENERAZIONE PDF STRUTTURATA (INVISIBILE A SCHERMO) -->
-    <div id="modello-pdf-invisibile" style="display: none;">
-        
-        <!-- ================= PAGINA 1 ================= -->
-        <div class="pagina-pdf">
-            <div class="pdf-carta-intestata">
-                <div class="pdf-ci-logo" id="pdf-logo-aziendale-contenitore">ROMEO SAFETY ITALIA S.r.l.</div>
-                <div class="pdf-ci-linea-verde"></div>
+<div id="modello-pdf-invisibile" style="display: none;">
+
+    <!-- ================= PAGINA 1 ================= -->
+    <div class="pagina-pdf">
+        <div class="pdf-carta-intestata">
+            <img src="logo-romeo.png" style="width: 420px; max-width: 100%; height: auto;">
+        </div>
+
+        <div class="pdf-blocco-destinatari">
+            <div class="pdf-dst-sinistra">
+                <div class="pdf-cornice-verde" id="pdf-identificativo-codice">COMUNE_DATA_</div>
             </div>
-
-            <div class="pdf-blocco-destinatari">
-                <div class="pdf-dst-sinistra">
-                    <div class="pdf-cornice-verde" id="pdf-identificativo-codice">COMUNE_DATA_</div>
-                </div>
-                <div class="pdf-dst-destra">
-                    <p><strong>Spett.le Affidataria:</strong> <span id="pdf-txt-affidataria">-</span></p>
-                    <p style="margin-top: 5px;"><strong>p.c. Spett.le Responsabile dei Lavori:</strong> <span id="pdf-txt-responsabile">-</span></p>
-                </div>
+            <div class="pdf-dst-destra">
+                <p><strong>Spett.le Affidataria:</strong> <span id="pdf-txt-affidataria">-</span></p>
+                <p style="margin-top: 5px;"><strong>p.c. Spett.le Responsabile dei Lavori:</strong> <span id="pdf-txt-responsabile">-</span></p>
             </div>
+        </div>
 
-            <div class="pdf-due-colonne">
-                <div class="pdf-col-sinistra">
-                    <div class="pdf-titolo-riquadro">ATTIVITÀ SVOLTA DURANTE IL SOPRALLUOGO</div>
-                    <div class="pdf-contenuto-riquadro" id="pdf-quadratini-attivita"></div>
-                    
-                    <div style="margin-top: 15px;">
-                        <p><strong>Impresa Affidataria coinvolta:</strong></p>
-                        <p style="padding-left: 10px; font-style: italic;" id="pdf-coinvolta-affidataria">-</p>
-                    </div>
-                    <div style="margin-top: 15px;">
-                        <p><strong>Impresa Esecutrice coinvolta:</strong></p>
-                        <p style="padding-left: 10px; font-style: italic;" id="pdf-coinvolta-esecutrice">-</p>
-                    </div>
+        <div class="pdf-due-colonne">
+            <div class="pdf-col-sinistra">
+                <div class="pdf-titolo-riquadro">ATTIVITÀ SVOLTA DURANTE IL SOPRALLUOGO</div>
+                <div class="pdf-contenuto-riquadro" id="pdf-quadratini-attivita"></div>
+
+                <div style="margin-top: 15px;">
+                    <p><strong>Impresa Affidataria coinvolta:</strong></p>
+                    <p style="padding-left: 10px; font-style: italic;" id="pdf-coinvolta-affidataria">-</p>
                 </div>
 
-                <div class="pdf-col-destra">
-                    <div class="pdf-titolo-riquadro">PLANIMETRIA GENERALE DI CANTIERE</div>
-                    <div class="pdf-riquadro-planimetria" id="pdf-planimetria-contenitore">
-                        <!-- L'immagine fissa della planimetria verrà inserita via script -->
-                    </div>
+                <div style="margin-top: 15px;">
+                    <p><strong>Impresa Esecutrice coinvolta:</strong></p>
+                    <p style="padding-left: 10px; font-style: italic;" id="pdf-coinvolta-esecutrice">-</p>
                 </div>
             </div>
 
-            <div class="pdf-cornice-verde-dettagli">
-                <strong>Fabbricato:</strong> <span id="pdf-txt-fabbricato">-</span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Piano:</strong> <span id="pdf-txt-piano">-</span>
-            </div>
-
-            <div class="pdf-footer-aziendale">
-                <div class="pdf-fa-sinistra" id="pdf-certificazioni-contenitore">⭐⭐ Certificazioni ISO 9001 - ISO 45001 ⭐⭐</div>
-                <div class="pdf-fa-destra">
-                    <strong>Il CSE p.i.e. <span id="pdf-firma-nome-p1">-</span></strong><br>
-                    Romeo Safety Italia S.r.l.
+            <div class="pdf-col-destra">
+                <div class="pdf-titolo-riquadro">PLANIMETRIA GENERALE DI CANTIERE</div>
+                <div class="pdf-riquadro-planimetria">
+                    <img src="planimetria.png" style="width:100%; height:100%; object-fit:contain;">
                 </div>
             </div>
         </div>
 
-        <div class="html2pdf__page-break"></div>
+        <div class="pdf-cornice-verde-dettagli">
+            <strong>Fabbricato:</strong> <span id="pdf-txt-fabbricato">-</span>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <strong>Piano:</strong> <span id="pdf-txt-piano">-</span>
+        </div>
 
-        <!-- ================= PAGINA 2 ================= -->
-        <div class="pagina-pdf">
-            <div class="pdf-carta-intestata">
-                <div class="pdf-ci-logo">ROMEO SAFETY ITALIA S.r.l.</div>
-                <div class="pdf-ci-linea-verde"></div>
+        <div class="pdf-footer-aziendale">
+            <div class="pdf-fa-sinistra">
+                <img src="certificazioni.png" style="width: 260px; height:auto;">
             </div>
-
-            <div class="pdf-contenitore-ia-formato">
-                <div class="pdf-ia-sezione-titolo">RELAZIONE TECNICA DI SOPRALLUOGO</div>
-                <div class="pdf-ia-testo-blocco" id="pdf-ia-descrizione">-</div>
-                <div class="pdf-striscia-nera-separatore"></div>
-                <div class="pdf-ia-testo-blocco" id="pdf-ia-misure">-</div>
-                <div class="pdf-striscia-nera-separatore"></div>
-                <div class="pdf-ia-testo-blocco" id="pdf-ia-correttive">-</div>
+            <div class="pdf-fa-destra">
+                <strong>Il CSE p.i.e. <span id="pdf-firma-nome-p1">-</span></strong><br>
+                Romeo Safety Italia S.r.l.
             </div>
-
-            <div class="pdf-sezione-tempistiche" id="pdf-quadratini-tempistiche"></div>
-
-           <div style="margin-top: 15px;">
-
-    <div class="pdf-titolo-riquadro">
-        DOCUMENTAZIONE FOTOGRAFICA RILEVATA
+        </div>
     </div>
 
-    <div class="pdf-griglia-foto-stampa">
+    <div class="html2pdf__page-break"></div>
 
-        <!-- FOTO 1 -->
-        <div class="pdf-box-foto-stampa" style="position:relative; overflow:hidden; background:white;">
-
-            <!-- PLANIMETRIA SFONDO -->
-            <img 
-                src="planimetria.png"
-                style="
-                    position:absolute;
-                    inset:0;
-                    width:100%;
-                    height:100%;
-                    object-fit:contain;
-                    opacity:0.18;
-                    z-index:1;
-                "
-            >
-
-            <!-- FOTO SOPRALLUOGO -->
-            <img 
-                id="pdf-img-cantiere-generale"
-                src=""
-                style="
-                    display:none;
-                    position:relative;
-                    z-index:2;
-                    width:100%;
-                    height:100%;
-                    object-fit:contain;
-                    padding:8px;
-                "
-            >
-
-            <div 
-                id="pdf-placeholder-img1"
-                class="pdf-placeholder-testo"
-                style="position:relative; z-index:2;"
-            >
-                Foto 1: Panoramica Violazione
-            </div>
-
+    <!-- ================= PAGINA 2 ================= -->
+    <div class="pagina-pdf">
+        <div class="pdf-carta-intestata">
+            <img src="logo-romeo.png" style="width: 420px; max-width: 100%; height: auto;">
         </div>
 
-        <!-- FOTO 2 -->
-        <div class="pdf-box-foto-stampa" style="background:white;">
-
-            <img 
-                id="pdf-foto-2"
-                src=""
-                style="
-                    display:none;
-                    width:100%;
-                    height:100%;
-                    object-fit:contain;
-                    padding:8px;
-                "
-            >
-
-            <div id="pdf-placeholder-img2" class="pdf-placeholder-testo">
-                Foto 2: Dettaglio Tecnico
-            </div>
-
+        <div class="pdf-contenitore-ia-formato">
+            <div class="pdf-ia-sezione-titolo">RELAZIONE TECNICA DI SOPRALLUOGO</div>
+            <div class="pdf-ia-testo-blocco" id="pdf-ia-descrizione">-</div>
+            <div class="pdf-striscia-nera-separatore"></div>
+            <div class="pdf-ia-testo-blocco" id="pdf-ia-misure">-</div>
+            <div class="pdf-striscia-nera-separatore"></div>
+            <div class="pdf-ia-testo-blocco" id="pdf-ia-correttive">-</div>
         </div>
 
+        <div class="pdf-sezione-tempistiche" id="pdf-quadratini-tempistiche"></div>
+
+        <div style="margin-top: 15px;">
+            <div class="pdf-titolo-riquadro">DOCUMENTAZIONE FOTOGRAFICA RILEVATA</div>
+
+            <div class="pdf-griglia-foto-stampa">
+                <div class="pdf-box-foto-stampa">
+                    <img id="pdf-img-cantiere-generale" src="" style="display:none; width:100%; height:100%; object-fit:contain; padding:8px;">
+                    <div id="pdf-placeholder-img1" class="pdf-placeholder-testo">Foto 1: Panoramica Violazione</div>
+                </div>
+
+                <div class="pdf-box-foto-stampa">
+                    <img id="pdf-foto-2" src="" style="display:none; width:100%; height:100%; object-fit:contain; padding:8px;">
+                    <div id="pdf-placeholder-img2" class="pdf-placeholder-testo">Foto 2: Dettaglio Tecnico</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pdf-footer-aziendale-firme">
+            <div class="pdf-fa-firme-area">
+                <div class="pdf-firma-box">
+                    <p><strong>Il CSE p.i.e. <span id="pdf-firma-nome-p2">-</span></strong></p>
+                    <div style="margin-top: 12mm;">___________________________</div>
+                </div>
+
+                <div class="pdf-firma-box" style="text-align: right;">
+                    <p><strong>Per Presa Visione e Accettazione l'Impresa</strong></p>
+                    <div style="margin-top: 12mm;">___________________________</div>
+                </div>
+            </div>
+
+            <div class="pdf-riga-dati-fiscali">
+                Romeo Safety Italia S.r.l. · Sede: Via Imperia, 25 - 20142 MILANO · Tel. 02/84.800.210<br>
+                C.F. e P.IVA 12689530157
+            </div>
+
+            <div style="margin-top: 8px;">
+                <img src="certificazioni.png" style="width:260px; height:auto;">
+            </div>
+        </div>
     </div>
-
 </div>
 
-            <div class="pdf-footer-aziendale-firme">
-                <div class="pdf-fa-firme-area">
-                    <div class="pdf-firma-box">
-                        <p><strong>Il CSE p.i.e. <span id="pdf-firma-nome-p2">-</span></strong></p>
-                        <div id="pdf-area-firma-grafica" style="margin-top: 12mm; font-size: 8pt; color: gray;">[Spazio Firma CSE]</div>
-                    </div>
-                    <div class="pdf-firma-box" style="text-align: right;">
-                        <p><strong>Per Presa Visione e Accettazione l'Impresa</strong></p>
-                        <div style="margin-top: 12mm;">___________________________</div>
-                    </div>
-                </div>
-                <div class="pdf-riga-dati-fiscali">
-                    Romeo Safety Italia S.r.l. · Sede: Via Imperia, 25 - 20142 MILANO · Tel. 02/84.800.210<br>
-                    C.F. e P.IVA 12689530157
-                </div>
-            </div>
-        </div>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="script.js"></script>
-<div style="
-    width:100%;
-    margin-top:30px;
-    padding-top:15px;
-    border-top:1px solid #cbd5e1;
-    text-align:center;
-">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="script.js"></script>
 
-    <img 
-        src="certificazioni.png"
-        style="
-            max-width:420px;
-            width:100%;
-            height:auto;
-            opacity:0.95;
-        "
-    >
-
-</div>
-
-</body>
-</html>
 </body>
 </html>
