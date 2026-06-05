@@ -435,33 +435,25 @@ function scaricaPDF(indice) {
                 mode: ['avoid-all', 'css']
             }
         };
-
-       setTimeout(function () {
-    html2pdf()
-        .set(opzioni)
-        .from(elementoPdf)
-        .toPdf()
-        .get('pdf')
-        .then(function (pdf) {
-            elementoPdf.style.display = 'none';
-            pdf.autoPrint();
-            window.open(pdf.output('bloburl'), '_blank');
-        })
-        .catch(function (errore) {
-            elementoPdf.style.display = 'none';
-
-            console.error("Errore PDF completo:", errore);
-            console.log("Tipo errore:", typeof errore);
-            console.log("Messaggio errore:", errore && errore.message ? errore.message : errore);
-
-            alert(
-                "Errore durante la generazione del PDF.\n\n" +
-                "Dettaglio: " +
-                (errore && errore.message ? errore.message : errore)
-            );
-        });
-}, 500);
+        setTimeout(function () {
+            html2pdf()
+                .set(opzioni)
+                .from(elementoPdf)
+                .toPdf()
+                .get('pdf')
+                .then(function (pdf) {
+                    elementoPdf.style.display = 'none';
+                    pdf.autoPrint();
+                    window.open(pdf.output('bloburl'), '_blank');
+                })
+                .catch(function (errore) {
+                    elementoPdf.style.display = 'none';
+                    console.error("Errore PDF completo:", errore);
+                    alert("Errore durante la generazione del PDF.");
+                });
+        }, 500);
     }
 }
 
 mostraCantieri();
+    
