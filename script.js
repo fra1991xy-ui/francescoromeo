@@ -434,7 +434,7 @@ elementoPdf.style.setProperty('color', 'black', 'important');
                 orientation: 'portrait'
             },
             pagebreak: {
-    mode: ['legacy']
+    mode: []
 }
         };
         setTimeout(function () {
