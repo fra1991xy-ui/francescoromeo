@@ -761,3 +761,7 @@ header p { margin: 5px 0 0 0; font-size: 0.9rem; opacity: 0.9; }
     max-height: 60mm !important;
     object-fit: contain !important;
 }
+/* NASCONDE IL MODELLO PDF DALLA PAGINA */
+#modello-pdf-invisibile {
+    display: none !important;
+}
