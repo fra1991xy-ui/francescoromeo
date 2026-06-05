@@ -733,3 +733,22 @@ header p { margin: 5px 0 0 0; font-size: 0.9rem; opacity: 0.9; }
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
 }
+/* FORZA PAGINE PDF REALI */
+.pdf-a4 {
+    page-break-after: always;
+    break-after: page;
+}
+
+.pdf-footer {
+    position: absolute;
+    bottom: 10mm;
+    left: 10mm;
+    right: 10mm;
+}
+
+.pdf-footer-p2 {
+    position: absolute;
+    bottom: 10mm;
+    left: 10mm;
+    right: 10mm;
+}
