@@ -434,8 +434,8 @@ elementoPdf.style.setProperty('color', 'black', 'important');
                 orientation: 'portrait'
             },
             pagebreak: {
-                mode: ['avoid-all', 'css']
-            }
+    mode: ['legacy']
+}
         };
         setTimeout(function () {
             html2pdf()
