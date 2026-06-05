@@ -1,0 +1,421 @@
+/* ==========================================================================
+   🎨 PARTE 1: STILE INTERFACCIA UTENTE IPAD (SCHERMO)
+   ========================================================================== */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+   background:
+    radial-gradient(circle at top left,#2563eb 0%,transparent 40%),
+    radial-gradient(circle at bottom right,#10b981 0%,transparent 40%),
+    #0f172a;
+    color:#f8fafc;
+}
+.contenitore-principale {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 15px;
+}
+header {
+    text-align:center;
+    background:rgba(255,255,255,.15);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,.2);
+    color:white;
+    padding:30px;
+    border-radius:20px;
+    margin-bottom:25px;
+}
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+header h1 { margin: 0; font-size: 1.6rem; }
+header p { margin: 5px 0 0 0; font-size: 0.9rem; opacity: 0.9; }
+
+.area-comandi { margin-bottom: 20px; text-align: center; }
+.btn-arancione {
+    background-color: #f59e0b; color: white; border: none; padding: 12px 24px;
+    border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer;
+}
+.btn-verde,
+.btn-arancione{
+    border:none;
+    border-radius:14px;
+    transition:.25s;
+    box-shadow:0 8px 25px rgba(0,0,0,.25);
+}
+
+.btn-verde:hover,
+.btn-arancione:hover{
+    transform:translateY(-2px);
+}
+#sezione-modulo {
+    background: white; padding: 20px; border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05); margin-bottom: 25px;
+}
+.gruppo-form { margin-bottom: 15px; display: flex; flex-direction: column; }
+.gruppo-form label { font-weight: bold; margin-bottom: 6px; font-size: 0.95rem; }
+.gruppo-form input[type="text"], .gruppo-form textarea {
+    padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 1rem;
+}
+.riga-doppia { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.area-radio, .area-checkbox {
+    display: flex; flex-direction: column; gap: 8px; background: #f8fafc; padding: 12px; border-radius: 6px;
+}
+
+/* 📦 ARCHIVIO TESSERE SCHERMO IPAD */
+.scheda-cantiere{
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:20px;
+}
+.barra-verde-report {
+    background-color: #f1f5f9; font-weight: bold; padding: 8px 12px; border-radius: 6px;
+    margin: 8px 0; border-left: 4px solid #10b981; font-size: 1.1rem;
+}
+.info-aziende {
+    font-size: 0.9rem;
+    background: #fafafa;
+    padding: 10px;
+    border-radius: 6px;
+    line-height: 1.5;
+    color: #111827;
+}
+
+.blocco-ia {
+    margin-top: 15px;
+    background-color: #f8fafc;
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px dashed #cbd5e1;
+}
+
+.titolo-blocco-ia {
+    font-weight: bold;
+    font-size: 0.85rem;
+    color: #475569;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.testo-blocco-ia {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    outline: none;
+    padding: 8px;
+    min-height: 24px;
+
+    /* CORREZIONE TESTO INVISIBILE */
+    color: #111827;
+    background-color: #ffffff;
+
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+
+    white-space: pre-wrap;
+}
+
+.testo-blocco-ia[contenteditable="true"]:focus {
+    background-color: #ffffff;
+    color: #111827;
+
+    border-radius: 6px;
+
+    border: 1px solid #3b82f6;
+
+    box-shadow: 0 0 0 2px rgba(59,130,246,0.15);
+}
+
+.griglia-foto-report {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.foto-report {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+}
+
+.area-pulsanti-scheda {
+    display: grid;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn-pdf {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+/* ==========================================================================
+   📄 PARTE 2: CONFIGURAZIONE GEOMETRICA E STAMPA CARTA INTESTATA PDF
+   ========================================================================== */
+.pagina-pdf {
+    width: 190mm;
+    min-height: 272mm;
+    padding: 10mm;
+    background: white;
+    color: black;
+    font-family: Arial, sans-serif;
+    font-size: 10.5pt;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* 🟦 CARTA INTESTATA SUPERIORE FISSA IN OGNI PAGINA */
+.pdf-carta-intestata {
+    border-bottom: 2px solid #000000;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+.pdf-ci-logo {
+    font-size: 13pt;
+    font-weight: bold;
+    color: #1e3a8a;
+    letter-spacing: 0.5px;
+}
+.pdf-ci-linea-verde {
+    width: 100%;
+    height: 3px;
+    background-color: #10b981;
+    position: absolute;
+    top: 22mm;
+    left: 10mm;
+    right: 10mm;
+}
+
+/* 🔲 INTESTAZIONE DISASSATA (Comune a SX, Destinatari a DX) */
+.pdf-blocco-destinatari {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+.pdf-dst-sinistra { width: 45%; }
+.pdf-dst-destra { width: 50%; font-size: 10pt; line-height: 1.4; text-align: left; }
+
+/* 🟢 CORNICI VERDI AZIENDALI */
+.pdf-cornice-verde {
+    border: 2px solid #10b981;
+    padding: 6px 12px;
+    font-weight: bold;
+    font-size: 11pt;
+    display: inline-block;
+    background-color: #ffffff;
+}
+.pdf-cornice-verde-dettagli {
+    border: 2px solid #10b981;
+    padding: 6px 12px;
+    font-size: 10pt;
+    margin-top: 15px;
+    background-color: #ffffff;
+    display: block;
+}
+
+/* 📊 GEOMETRIA A DUE COLONNE (PAGINA 1) */
+.pdf-due-colonne {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    height: 125mm;
+}
+.pdf-col-sinistra {
+    width: 48%;
+    border: 1px solid #000000;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+.pdf-col-destra {
+    width: 48%;
+    border: 1px solid #000000;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+/* TITOLI DEI RIQUADRI NERI */
+.pdf-titolo-riquadro {
+    font-size: 9.5pt;
+    font-weight: bold;
+    background-color: #f3f4f6;
+    padding: 4px 6px;
+    border-bottom: 1px solid #000000;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+.pdf-contenuto-riquadro {
+    font-size: 9pt;
+    line-height: 1.6;
+    flex-grow: 1;
+}
+
+/* RIQUADRO PLANIMETRIA FISSA */
+.pdf-riquadro-planimetria {
+    width: 100%;
+    height: 100mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.pdf-riquadro-planimetria img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 🧠 BLOCCO CONTENUTI INTERNI IA (PAGINA 2) */
+.pdf-contenitore-ia-formato {
+    border: 1px solid #000000;
+    padding: 12px;
+    min-height: 135mm;
+    background: #ffffff;
+}
+.pdf-ia-sezione-titolo {
+    font-size: 11pt;
+    font-weight: bold;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    border-bottom: 1px dashed #000000;
+    padding-bottom: 4px;
+}
+.pdf-ia-testo-blocco {
+    font-size: 10pt;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+/* ⬛ STRISCIA NERA SOTTILE DI SEPARAZIONE ARGOMENTI IA */
+.pdf-striscia-nera-separatore {
+    width: 100%;
+    height: 1px;
+    background-color: #000000;
+    margin: 15px 0;
+}
+
+/* SEZIONE DELLE TEMPISTICHE DI SICUREZZA */
+.pdf-sezione-tempistiche {
+    margin-top: 15px;
+    font-size: 9.5pt;
+    line-height: 1.5;
+    border: 1px solid #000000;
+    padding: 10px;
+}
+
+/* GRIGLIA FOTO STAMPA (PAGINA 2) */
+.pdf-griglia-foto-stampa {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 8px;
+}
+.pdf-box-foto-stampa {
+    border: 1px solid #000000;
+    width: 100%;
+    height: 42mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #fafafa;
+}
+.pdf-box-foto-stampa img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.pdf-placeholder-testo {
+    font-size: 8.5pt;
+    color: gray;
+    text-align: center;
+}
+
+/* ✒️ PIÈ DI PAGINA E FIRME ORIZZONTALI (FOTO 2) */
+.pdf-footer-aziendale {
+    position: absolute;
+    bottom: 10mm;
+    left: 10mm;
+    right: 10mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 8.5pt;
+    border-top: 1px solid #ccc;
+    padding-top: 5px;
+}
+.pdf-footer-aziendale-firme {
+    position: absolute;
+    bottom: 10mm;
+    left: 10mm;
+    right: 10mm;
+    font-size: 9pt;
+    border-top: 1px solid #ccc;
+    padding-top: 5px;
+}
+.pdf-fa-sinistra { width: 50%; font-weight: bold; color: #4b5563; }
+.pdf-fa-destra { width: 45%; text-align: right; line-height: 1.3; }
+
+.pdf-fa-firme-area {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+.pdf-firma-box { width: 45%; line-height: 1.4; }
+.pdf-riga-dati-fiscali {
+    width: 100%;
+    text-align: center;
+    font-size: 7.5pt;
+    color: #4b5563;
+    line-height: 1.4;
+    border-top: 1px dashed #ccc;
+    padding-top: 6px;
+}
+.pdf-footer-pagina {
+    text-align: right;
+    font-size: 8pt;
+    color: gray;
+    margin-top: 5px;
+}
+/* CORREZIONE TESTO FORM NUOVO CANTIERE */
+#sezione-modulo,
+#sezione-modulo label,
+#sezione-modulo h2,
+#form-cantiere,
+#form-cantiere input,
+#form-cantiere textarea,
+#form-cantiere select {
+    color: #111827 !important;
+}
+
+#form-cantiere input,
+#form-cantiere textarea,
+#form-cantiere select {
+    background-color: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+#form-cantiere input::placeholder,
+#form-cantiere textarea::placeholder {
+    color: #64748b !important;
+    opacity: 1 !important;
+}

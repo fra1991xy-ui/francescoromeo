@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Verbale Sopralluogo CSE - Romeo Safety</title>
+    <script src="https://cloudflare.com"></script>
+    <link rel="stylesheet" href="style2.css?v=301">
+</head>
+<body>
+
+    <div class="contenitore-principale">
+    <header>
+        <h1>👷 Verbale CSE Pro - Romeo Safety Italia</h1>
+        <p>Sopralluoghi con IA e Planimetria Integrata</p>
+    </header>
+
+    <div style="text-align:center; margin-bottom:20px;">
+        <img src="logo-romeo.png" style="max-width:420px; width:100%; height:auto;">
+    </div>
+
+    <div class="area-comandi">
+        <button id="btn-nuovo" class="btn-arancione">+ Nuovo Cantiere</button>
+    </div>
+
+        <!-- FORMULARIO INTEGRATO SULL'IPAD (TUTTI I CAMPI VUOTI) -->
+        <section id="sezione-modulo" style="display: none;">
+            <form id="form-cantiere">
+                <div class="gruppo-form">
+                    <label>📌 Comune / Localizzazione Cantiere:</label>
+                    <input type="text" id="nome-cantiere" placeholder="Es: Milano" required>
+                </div>
+
+                <div class="riga-doppia">
+                    <div class="gruppo-form">
+                        <label>🏢 Spett.le Impresa Affidataria:</label>
+                        <input type="text" id="impresa-affidataria" placeholder="Ragione sociale affidataria" required>
+                    </div>
+                    <div class="gruppo-form">
+                        <label>💼 p.c. Spett.le Responsabile dei Lavori:</label>
+                        <input type="text" id="responsabile-lavori" placeholder="Nome Responsabile" required>
+                    </div>
+                </div>
+
+                <div class="riga-doppia">
+                    <div class="gruppo-form">
+                        <label>🏢 Impresa Esecutrice / Sub coinvolta:</label>
+                        <input type="text" id="impresa-esecutrice" placeholder="Ragione sociale esecutrice" required>
+                    </div>
+                    <div class="gruppo-form">
+                        <label>👤 Tecnico / CSE:</label>
+                        <input type="text" id="tecnico-sopralluogo" placeholder="Inserisci Nome Coordinatore" required>
+                    </div>
+                </div>
+
+                <div class="riga-doppia" style="background:#e0f2fe; padding:10px; border-radius:6px; margin-bottom:15px;">
+                    <div class="gruppo-form">
+                        <label>🏢 Fabbricato:</label>
+                        <input type="text" id="input-fabbricato" placeholder="Es: Corpo A" required>
+                    </div>
+                    <div class="gruppo-form">
+                        <label>🪜 Piano:</label>
+                        <input type="text" id="input-piano" placeholder="Es: Terzo Piano" required>
+                    </div>
+                </div>
+
+                <div class="gruppo-form">
+                    <label>🛠️ Attività svolte durante il sopralluogo:</label>
+                    <div class="area-checkbox">
+                        <label><input type="checkbox" class="check-attivita" value="Carpenteria metallica, in acciaio e opere complementari"> Carpenteria metallica, in acciaio</label>
+                        <label><input type="checkbox" class="check-attivita" value="Opere murarie e opere complementari"> Opere murarie e opere complementari</label>
+                        <label><input type="checkbox" class="check-attivita" value="Impianti meccanici e opere complementari"> Impianti meccanici e opere complementari</label>
+                        <label><input type="checkbox" class="check-attivita" value="Impianti elettrici e opere complementari"> Impianti elettrici e opere complementari</label>
+                        <label><input type="checkbox" class="check-attivita" value="Impianti idraulici e opere complementari"> Impianti idraulici e opere complementari</label>
+                    </div>
+                </div>
+
+                <div class="gruppo-form">
+                    <label>⚠️ Disposizioni operative di Sicurezza e Sospensioni:</label>
+                    <div class="area-radio">
+                        <label><input type="radio" name="tempistica_sicurezza" value="Attività sospesa fino ad adempimento"> Attività sospesa fino ad adempimento</label>
+                        <label><input type="radio" name="tempistica_sicurezza" value="Messa in sicurezza immediata" checked> Messa in sicurezza immediata</label>
+                        <label><input type="radio" name="tempistica_sicurezza" value="Messa in sicurezza entro 2 giorni"> Messa in sicurezza entro 2 giorni</label>
+                        <label><input type="radio" name="tempistica_sicurezza" value="Messa in sicurezza entro 3 giorni"> Messa in sicurezza entro 3 giorni</label>
+                        <label><input type="radio" name="tempistica_sicurezza" value="Messa in sicurezza giornata"> Messa in sicurezza giornata</label>
+                    </div>
+                </div>
+
+                <div class="gruppo-form">
+                    <label>📝 Note e Appunti Rapidi di Cantiere (Per l'IA):</label>
+                    <textarea id="note-cantiere" placeholder="Scrivi liberamente cosa hai riscontrato..." rows="4" required></textarea>
+                </div>
+
+                <div class="riga-doppia">
+                    <div class="gruppo-form">
+                        <label>📸 Foto 1 (Inosservanza):</label>
+                        <input type="file" id="foto-cantiere" accept="image/*">
+                    </div>
+                    <div class="gruppo-form">
+                        <label>📸 Foto 2 (Dettaglio):</label>
+                        <input type="file" id="foto-cantiere-2" accept="image/*">
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-salva-form" class="btn-verde">Genera con IA e Salva</button>
+            </form>
+        </section>
+
+        <section id="sezione-elenco">
+            <h2>📦 Archivio Verbali Generati</h2>
+            <div id="lista-cantieri"></div>
+        </section>
+    </div>
+    <!-- 🖨️ STRUTTURA GENERAZIONE PDF STRUTTURATA (INVISIBILE A SCHERMO) -->
+    <div id="modello-pdf-invisibile" style="display: none;">
+        
+        <!-- ================= PAGINA 1 ================= -->
+        <div class="pagina-pdf">
+            <div class="pdf-carta-intestata">
+                <div class="pdf-ci-logo" id="pdf-logo-aziendale-contenitore">ROMEO SAFETY ITALIA S.r.l.</div>
+                <div class="pdf-ci-linea-verde"></div>
+            </div>
+
+            <div class="pdf-blocco-destinatari">
+                <div class="pdf-dst-sinistra">
+                    <div class="pdf-cornice-verde" id="pdf-identificativo-codice">COMUNE_DATA_</div>
+                </div>
+                <div class="pdf-dst-destra">
+                    <p><strong>Spett.le Affidataria:</strong> <span id="pdf-txt-affidataria">-</span></p>
+                    <p style="margin-top: 5px;"><strong>p.c. Spett.le Responsabile dei Lavori:</strong> <span id="pdf-txt-responsabile">-</span></p>
+                </div>
+            </div>
+
+            <div class="pdf-due-colonne">
+                <div class="pdf-col-sinistra">
+                    <div class="pdf-titolo-riquadro">ATTIVITÀ SVOLTA DURANTE IL SOPRALLUOGO</div>
+                    <div class="pdf-contenuto-riquadro" id="pdf-quadratini-attivita"></div>
+                    
+                    <div style="margin-top: 15px;">
+                        <p><strong>Impresa Affidataria coinvolta:</strong></p>
+                        <p style="padding-left: 10px; font-style: italic;" id="pdf-coinvolta-affidataria">-</p>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <p><strong>Impresa Esecutrice coinvolta:</strong></p>
+                        <p style="padding-left: 10px; font-style: italic;" id="pdf-coinvolta-esecutrice">-</p>
+                    </div>
+                </div>
+
+                <div class="pdf-col-destra">
+                    <div class="pdf-titolo-riquadro">PLANIMETRIA GENERALE DI CANTIERE</div>
+                    <div class="pdf-riquadro-planimetria" id="pdf-planimetria-contenitore">
+                        <!-- L'immagine fissa della planimetria verrà inserita via script -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="pdf-cornice-verde-dettagli">
+                <strong>Fabbricato:</strong> <span id="pdf-txt-fabbricato">-</span> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Piano:</strong> <span id="pdf-txt-piano">-</span>
+            </div>
+
+            <div class="pdf-footer-aziendale">
+                <div class="pdf-fa-sinistra" id="pdf-certificazioni-contenitore">⭐⭐ Certificazioni ISO 9001 - ISO 45001 ⭐⭐</div>
+                <div class="pdf-fa-destra">
+                    <strong>Il CSE p.i.e. <span id="pdf-firma-nome-p1">-</span></strong><br>
+                    Romeo Safety Italia S.r.l.
+                </div>
+            </div>
+        </div>
+
+        <div class="html2pdf__page-break"></div>
+
+        <!-- ================= PAGINA 2 ================= -->
+        <div class="pagina-pdf">
+            <div class="pdf-carta-intestata">
+                <div class="pdf-ci-logo">ROMEO SAFETY ITALIA S.r.l.</div>
+                <div class="pdf-ci-linea-verde"></div>
+            </div>
+
+            <div class="pdf-contenitore-ia-formato">
+                <div class="pdf-ia-sezione-titolo">RELAZIONE TECNICA DI SOPRALLUOGO</div>
+                <div class="pdf-ia-testo-blocco" id="pdf-ia-descrizione">-</div>
+                <div class="pdf-striscia-nera-separatore"></div>
+                <div class="pdf-ia-testo-blocco" id="pdf-ia-misure">-</div>
+                <div class="pdf-striscia-nera-separatore"></div>
+                <div class="pdf-ia-testo-blocco" id="pdf-ia-correttive">-</div>
+            </div>
+
+            <div class="pdf-sezione-tempistiche" id="pdf-quadratini-tempistiche"></div>
+
+           <div style="margin-top: 15px;">
+
+    <div class="pdf-titolo-riquadro">
+        DOCUMENTAZIONE FOTOGRAFICA RILEVATA
+    </div>
+
+    <div class="pdf-griglia-foto-stampa">
+
+        <!-- FOTO 1 -->
+        <div class="pdf-box-foto-stampa" style="position:relative; overflow:hidden; background:white;">
+
+            <!-- PLANIMETRIA SFONDO -->
+            <img 
+                src="planimetria.png"
+                style="
+                    position:absolute;
+                    inset:0;
+                    width:100%;
+                    height:100%;
+                    object-fit:contain;
+                    opacity:0.18;
+                    z-index:1;
+                "
+            >
+
+            <!-- FOTO SOPRALLUOGO -->
+            <img 
+                id="pdf-img-cantiere-generale"
+                src=""
+                style="
+                    display:none;
+                    position:relative;
+                    z-index:2;
+                    width:100%;
+                    height:100%;
+                    object-fit:contain;
+                    padding:8px;
+                "
+            >
+
+            <div 
+                id="pdf-placeholder-img1"
+                class="pdf-placeholder-testo"
+                style="position:relative; z-index:2;"
+            >
+                Foto 1: Panoramica Violazione
+            </div>
+
+        </div>
+
+        <!-- FOTO 2 -->
+        <div class="pdf-box-foto-stampa" style="background:white;">
+
+            <img 
+                id="pdf-foto-2"
+                src=""
+                style="
+                    display:none;
+                    width:100%;
+                    height:100%;
+                    object-fit:contain;
+                    padding:8px;
+                "
+            >
+
+            <div id="pdf-placeholder-img2" class="pdf-placeholder-testo">
+                Foto 2: Dettaglio Tecnico
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+            <div class="pdf-footer-aziendale-firme">
+                <div class="pdf-fa-firme-area">
+                    <div class="pdf-firma-box">
+                        <p><strong>Il CSE p.i.e. <span id="pdf-firma-nome-p2">-</span></strong></p>
+                        <div id="pdf-area-firma-grafica" style="margin-top: 12mm; font-size: 8pt; color: gray;">[Spazio Firma CSE]</div>
+                    </div>
+                    <div class="pdf-firma-box" style="text-align: right;">
+                        <p><strong>Per Presa Visione e Accettazione l'Impresa</strong></p>
+                        <div style="margin-top: 12mm;">___________________________</div>
+                    </div>
+                </div>
+                <div class="pdf-riga-dati-fiscali">
+                    Romeo Safety Italia S.r.l. · Sede: Via Imperia, 25 - 20142 MILANO · Tel. 02/84.800.210<br>
+                    C.F. e P.IVA 12689530157
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="script.js"></script>
+<div style="
+    width:100%;
+    margin-top:30px;
+    padding-top:15px;
+    border-top:1px solid #cbd5e1;
+    text-align:center;
+">
+
+    <img 
+        src="certificazioni.png"
+        style="
+            max-width:420px;
+            width:100%;
+            height:auto;
+            opacity:0.95;
+        "
+    >
+
+</div>
+
+</body>
+</html>
+</body>
+</html>
