@@ -414,7 +414,9 @@ function scaricaPDF(indice) {
     const elementoPdf = document.getElementById('modello-pdf-invisibile');
 
     if (elementoPdf) {
-        elementoPdf.style.display = 'block';
+        elementoPdf.style.setProperty('display', 'block', 'important');
+elementoPdf.style.setProperty('background', 'white', 'important');
+elementoPdf.style.setProperty('color', 'black', 'important');
 
         const opzioni = {
     margin: 0,
@@ -442,12 +444,12 @@ function scaricaPDF(indice) {
                 .toPdf()
                 .get('pdf')
                 .then(function (pdf) {
-                    elementoPdf.style.display = 'none';
+                    elementoPdf.style.setProperty('display', 'none', 'important');
                     pdf.autoPrint();
                     window.open(pdf.output('bloburl'), '_blank');
                 })
                 .catch(function (errore) {
-                    elementoPdf.style.display = 'none';
+                    elementoPdf.style.setProperty('display', 'none', 'important');
                     console.error("Errore PDF completo:", errore);
                     alert("Errore durante la generazione del PDF.");
                 });
