@@ -311,150 +311,252 @@ function condividiReport(indice) {
         window.open(`mailto:?subject=Report CSE ${encodeURIComponent(c.nome || "")}&body=${encodeURIComponent(testoCondivisione)}`);
     }
 }
+async function scaricaPDF(indice) {
+    const { jsPDF } = window.jspdf;
 
-function scaricaPDF(indice) {
     let cantieri = JSON.parse(localStorage.getItem('databaseCantieri')) || [];
     let c = cantieri[indice];
 
-    if (!c) return;
-
-    if (typeof html2pdf === "undefined") {
-        alert("Errore: libreria html2pdf non caricata. Controlla index.html.");
+    if (!c) {
+        alert("Report non trovato.");
         return;
     }
 
-    if (document.getElementById('pdf-identificativo-codice')) {
-        const dataPulita = (c.data || "").replace(/\//g, '');
-        testo('pdf-identificativo-codice', `${(c.nome || "").toUpperCase()}_${dataPulita}_`);
-    }
+    const pdf = new jsPDF("p", "mm", "a4");
 
-    testo('pdf-txt-affidataria', c.affidataria);
-    testo('pdf-txt-responsabile', c.respLavori);
-    testo('pdf-coinvolta-affidataria', c.affidataria);
-    testo('pdf-coinvolta-esecutrice', c.esecutrice);
-    testo('pdf-tab-esecutrice', c.esecutrice);
-    testo('pdf-txt-fabbricato', c.fabbricato);
-    testo('pdf-txt-piano', c.piano);
-    testo('pdf-firma-nome-p1', c.tecnico);
-    testo('pdf-firma-nome-p2', c.tecnico);
-
-    testo('pdf-ia-descrizione', c.iaDescrizione);
-    testo('pdf-ia-misure', c.iaMisure);
-    testo('pdf-ia-correttive', c.iaCorrettive);
-
-    if (document.getElementById('pdf-quadratini-attivita')) {
-        const elencoTotale = [
-            "Carpenteria metallica, in acciaio e opere complementari",
-            "Opere murarie e opere complementari",
-            "Impianti meccanici e opere complementari",
-            "Impianti elettrici e opere complementari",
-            "Impianti idraulici e opere complementari"
-        ];
-
-        let htmlAttivita = "";
-
-        elencoTotale.forEach(att => {
-            let spunta = (c.attivita || []).includes(att) ? "<strong>[X]</strong>" : "[ ]";
-            htmlAttivita += `<p style="margin: 4px 0; font-weight: normal;">${spunta} ${att}</p>`;
+    async function caricaImmagine(src) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.onload = function () {
+                resolve(img);
+            };
+            img.onerror = function () {
+                resolve(null);
+            };
+            img.src = src;
         });
-
-        html('pdf-quadratini-attivita', htmlAttivita);
     }
 
-    if (document.getElementById('pdf-quadratini-tempistiche')) {
-        const elencoTempistiche = [
-            "Attività sospesa fino ad adempimento",
-            "Messa in sicurezza immediata",
-            "Messa in sicurezza entro 2 giorni",
-            "Messa in sicurezza entro 3 giorni",
-            "Messa in sicurezza giornata"
-        ];
+    const logo = await caricaImmagine("logo-romeo.png");
+    const certificazioni = await caricaImmagine("certificazioni.png");
+    const planimetria = await caricaImmagine("planimetria.png");
 
-        let htmlTempistiche = "<p style='margin:0 0 6px 0;'><strong>Disposizioni operative e scadenze:</strong></p>";
+    const verde = [146, 208, 80];
 
-        elencoTempistiche.forEach(temp => {
-            let spunta = (c.tempistica_sicurezza === temp) ? "<strong>[X]</strong>" : "[ ]";
-            htmlTempistiche += `<p style="margin: 4px 0; font-weight: normal;">${spunta} ${temp}</p>`;
-        });
-
-        html('pdf-quadratini-tempistiche', htmlTempistiche);
-    }
-
-    const imgGenerale = document.getElementById('pdf-img-cantiere-generale');
-    const placeholder1 = document.getElementById('pdf-placeholder-img1');
-
-    if (imgGenerale && placeholder1) {
-        if (c.foto1) {
-            imgGenerale.src = c.foto1;
-            imgGenerale.style.display = 'block';
-            placeholder1.style.display = 'none';
-        } else {
-            imgGenerale.style.display = 'none';
-            placeholder1.style.display = 'block';
+    function intestazione() {
+        if (logo) {
+            pdf.addImage(logo, "PNG", 20, 12, 170, 18);
         }
     }
 
-    const imgDettaglio =
-        document.getElementById('pdf-foto-2') ||
-        document.getElementById('pdf-foto2');
-
-    const placeholder2 = document.getElementById('pdf-placeholder-img2');
-
-    if (imgDettaglio) {
-        if (c.foto2) {
-            imgDettaglio.src = c.foto2;
-            imgDettaglio.style.display = 'block';
-            if (placeholder2) placeholder2.style.display = 'none';
-        } else {
-            imgDettaglio.style.display = 'none';
-            if (placeholder2) placeholder2.style.display = 'block';
+    function footer() {
+        if (certificazioni) {
+            pdf.addImage(certificazioni, "PNG", 18, 262, 55, 18);
         }
+
+        pdf.setFontSize(7);
+        pdf.setTextColor(80, 80, 80);
+        pdf.text("Romeo Safety Italia S.r.l.", 185, 264, { align: "right" });
+        pdf.text("Sede: Via Imperia, 25 - 20142 MILANO", 185, 268, { align: "right" });
+        pdf.text("Tel. 02/84.800.210 · C.F. e P.IVA 12689530157", 185, 272, { align: "right" });
+
+        pdf.setTextColor(0, 0, 0);
     }
 
-    const elementoPdf = document.getElementById('modello-pdf-invisibile');
-
-    if (elementoPdf) {
-        elementoPdf.style.setProperty('display', 'block', 'important');
-elementoPdf.style.setProperty('background', 'white', 'important');
-elementoPdf.style.setProperty('color', 'black', 'important');
-
-        const opzioni = {
-    margin: 0,
-            filename: `Verbale_CSE_${(c.nome || "report").toUpperCase()}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: {
-                scale: 2,
-                useCORS: true,
-                logging: false,
-                letterRendering: true
-            },
-            jsPDF: {
-                unit: 'mm',
-                format: 'a4',
-                orientation: 'portrait'
-            },
-            pagebreak: {
-    mode: []
-}
-        };
-        setTimeout(function () {
-            html2pdf()
-                .set(opzioni)
-                .from(elementoPdf)
-                .toPdf()
-                .get('pdf')
-                .then(function (pdf) {
-                    elementoPdf.style.setProperty('display', 'none', 'important');
-                    pdf.autoPrint();
-                    window.open(pdf.output('bloburl'), '_blank');
-                })
-                .catch(function (errore) {
-                    elementoPdf.style.setProperty('display', 'none', 'important');
-                    console.error("Errore PDF completo:", errore);
-                    alert("Errore durante la generazione del PDF.");
-                });
-        }, 500);
+    function testoMultiriga(testo, x, y, larghezza, altezzaRiga = 4) {
+        const righe = pdf.splitTextToSize(testo || "-", larghezza);
+        pdf.text(righe, x, y);
+        return y + righe.length * altezzaRiga;
     }
+
+    // ======================
+    // PAGINA 1
+    // ======================
+
+    intestazione();
+
+    pdf.setFontSize(8);
+    pdf.text(`${(c.nome || "").toUpperCase()}_${(c.data || "").replaceAll("/", "")}_`, 18, 45);
+
+    pdf.setFont(undefined, "bold");
+    pdf.text(`Spett.le Affidataria: ${c.affidataria || "-"}`, 185, 45, { align: "right" });
+    pdf.text(`p.c. Spett.le Responsabile dei Lavori: ${c.respLavori || "-"}`, 185, 53, { align: "right" });
+    pdf.setFont(undefined, "normal");
+
+    pdf.setFillColor(...verde);
+    pdf.rect(15, 63, 180, 7, "FD");
+    pdf.setFont(undefined, "bold");
+    pdf.setFontSize(8);
+    pdf.text("Report di Sopralluogo CSE – Cantiere “R3” STMicroelectronics Sito di Agrate Brianza (MB)", 105, 68, { align: "center" });
+
+    pdf.setDrawColor(0, 0, 0);
+    pdf.rect(15, 70, 180, 58);
+
+    pdf.line(125, 70, 125, 128);
+
+    pdf.setFontSize(8);
+    pdf.text("Attività svolta durante il sopralluogo:", 18, 77);
+
+    const elencoAttivita = [
+        "Carpenteria metallica, in acciaio e opere complementari",
+        "Opere murarie e opere complementari",
+        "Impianti meccanici e opere complementari",
+        "Impianti elettrici e opere complementari",
+        "Impianti idraulici e opere complementari"
+    ];
+
+    let y = 83;
+
+    elencoAttivita.forEach(att => {
+        const check = (c.attivita || []).includes(att) ? "[X]" : "[ ]";
+        pdf.setFont(undefined, "normal");
+        pdf.text(`${check} ${att}`, 18, y);
+        y += 5;
+    });
+
+    y += 8;
+    pdf.setFont(undefined, "bold");
+    pdf.text("Impresa Affidataria coinvolta:", 18, y);
+    pdf.setFont(undefined, "normal");
+    pdf.text(c.affidataria || "-", 18, y + 5);
+
+    y += 18;
+    pdf.setFont(undefined, "bold");
+    pdf.text("Impresa Esecutrice coinvolta:", 18, y);
+    pdf.setFont(undefined, "normal");
+    pdf.text(c.esecutrice || "-", 18, y + 5);
+
+    if (planimetria) {
+        pdf.addImage(planimetria, "PNG", 130, 75, 58, 48);
+    }
+
+    pdf.setFillColor(...verde);
+    pdf.rect(15, 128, 180, 8, "FD");
+    pdf.setFont(undefined, "bold");
+    pdf.text(`Fabbricato: ${c.fabbricato || "-"}    Piano: ${c.piano || "-"}`, 105, 133, { align: "center" });
+
+    pdf.setFillColor(...verde);
+    pdf.rect(15, 155, 115, 8, "F");
+    pdf.setFontSize(10);
+    pdf.text(`Sopralluogo effettuato da:  ☐  ${c.tecnico || "-"}`, 18, 161);
+
+    pdf.setFontSize(8);
+    pdf.text("ASPETTI – IMPATTI E RELATIVE MISURE DI PREVENZIONE E PROTEZIONE", 15, 212);
+
+    footer();
+
+    // ======================
+    // PAGINA 2
+    // ======================
+
+    pdf.addPage();
+
+    intestazione();
+
+    pdf.setFillColor(...verde);
+    pdf.rect(15, 42, 180, 8, "FD");
+
+    pdf.setFontSize(8);
+    pdf.setFont(undefined, "bold");
+    pdf.text(`Fabbricato: ${c.fabbricato || "-"}    Piano: ${c.piano || "-"}`, 18, 47);
+
+    pdf.rect(15, 50, 180, 70);
+
+    pdf.setFont(undefined, "bold");
+    pdf.text("Descrizione attività:", 18, 58);
+    pdf.setFont(undefined, "normal");
+    let y2 = testoMultiriga(c.iaDescrizione, 18, 63, 170, 4);
+
+    pdf.setFont(undefined, "bold");
+    pdf.text("Misure di sicurezza attuate:", 18, y2 + 3);
+    pdf.setFont(undefined, "normal");
+    y2 = testoMultiriga(c.iaMisure, 18, y2 + 8, 170, 4);
+
+    pdf.setFont(undefined, "bold");
+    pdf.text("Misure correttive:", 18, y2 + 3);
+    pdf.setFont(undefined, "normal");
+    testoMultiriga(c.iaCorrettive, 18, y2 + 8, 170, 4);
+
+    pdf.line(15, 120, 195, 120);
+
+    pdf.setFontSize(7);
+    pdf.text("Disposizioni operative e scadenze:", 18, 126);
+
+    const tempistiche = [
+        "Attività sospesa fino ad adempimento",
+        "Messa in sicurezza immediata",
+        "Messa in sicurezza entro 2 giorni",
+        "Messa in sicurezza entro 3 giorni",
+        "Messa in sicurezza giornata"
+    ];
+
+    let yt = 131;
+    tempistiche.forEach(t => {
+        const check = c.tempistica_sicurezza === t ? "[X]" : "[ ]";
+        pdf.text(`${check} ${t}`, 18, yt);
+        yt += 4;
+    });
+
+    // Area foto
+    pdf.rect(15, 150, 180, 70);
+    pdf.setFillColor(...verde);
+    pdf.rect(15, 150, 10, 70, "FD");
+
+    pdf.setFontSize(8);
+    pdf.text("foto NC n.1", 20, 190, { angle: 90 });
+
+    pdf.line(105, 150, 105, 220);
+
+    if (c.foto1) {
+        pdf.addImage(c.foto1, "JPEG", 35, 158, 60, 45);
+    } else {
+        pdf.setFontSize(24);
+        pdf.text("foto", 60, 185, { align: "center" });
+    }
+
+    if (c.foto2) {
+        pdf.addImage(c.foto2, "JPEG", 120, 158, 60, 45);
+    } else {
+        pdf.setFontSize(24);
+        pdf.text("foto", 150, 185, { align: "center" });
+    }
+
+    pdf.setFontSize(8);
+    pdf.text("Foto1 - non conformità", 65, 215, { align: "center" });
+    pdf.text("Foto 2", 150, 215, { align: "center" });
+
+    pdf.setFontSize(8);
+    pdf.text("sospese: ☒ NON APPLICABILE - ☐ APPLICABILE", 15, 228);
+
+    pdf.setFillColor(...verde);
+    pdf.rect(15, 232, 180, 7, "FD");
+    pdf.setFontSize(7);
+    pdf.text("Attività", 18, 237);
+    pdf.text("Data Sospensione attività", 40, 237);
+    pdf.text("Attività sospesa", 85, 237);
+    pdf.text("Data ripresa attività", 125, 237);
+    pdf.text("Descrizione dell’adempimento", 155, 237);
+
+    pdf.rect(15, 232, 180, 14);
+    pdf.line(35, 232, 35, 246);
+    pdf.line(80, 232, 80, 246);
+    pdf.line(120, 232, 120, 246);
+    pdf.line(150, 232, 150, 246);
+    pdf.line(15, 239, 195, 239);
+
+    pdf.text("1", 18, 244);
+    pdf.text("-", 40, 244);
+    pdf.text("Lavori in quota", 85, 244);
+    pdf.text("-", 125, 244);
+    pdf.text("-", 155, 244);
+
+    pdf.setFontSize(8);
+    pdf.text(`Il CSE p.i.e. ${c.tecnico || "-"}`, 185, 255, { align: "right" });
+
+    footer();
+
+    pdf.save(`Verbale_CSE_${(c.nome || "report").toUpperCase()}.pdf`);
 }
 
 mostraCantieri();
