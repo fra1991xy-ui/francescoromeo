@@ -725,3 +725,39 @@ header p { margin: 5px 0 0 0; font-size: 0.9rem; opacity: 0.9; }
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
 }
+/* CORREZIONE TAGLIO PDF */
+.pdf-a4 {
+    width: 210mm !important;
+    height: 297mm !important;
+    min-height: 297mm !important;
+    max-height: 297mm !important;
+    overflow: hidden !important;
+    padding: 12mm 12mm 10mm 12mm !important;
+}
+
+.pdf-planimetria {
+    width: 100% !important;
+    height: 48mm !important;
+    object-fit: contain !important;
+}
+
+.pdf-box-principale {
+    min-height: 50mm !important;
+    max-height: 55mm !important;
+}
+
+.pdf-spazio-bianco {
+    height: 25mm !important;
+}
+
+.pdf-area-foto {
+    min-height: 70mm !important;
+    max-height: 75mm !important;
+}
+
+.pdf-foto-img {
+    display: block;
+    max-width: 100% !important;
+    max-height: 60mm !important;
+    object-fit: contain !important;
+}
