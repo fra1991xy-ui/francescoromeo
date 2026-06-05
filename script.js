@@ -417,7 +417,7 @@ function scaricaPDF(indice) {
         elementoPdf.style.display = 'block';
 
         const opzioni = {
-            margin: 10,
+    margin: 0,
             filename: `Verbale_CSE_${(c.nome || "report").toUpperCase()}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: {
@@ -436,11 +436,12 @@ function scaricaPDF(indice) {
             }
         };
 
-        html2pdf()
-            .set(opzioni)
-            .from(elementoPdf)
-            .toPdf()
-            .get('pdf')
+        setTimeout(function () {
+    html2pdf()
+        .set(opzioni)
+        .from(elementoPdf)
+        .toPdf()
+        .get('pdf')
             .then(function (pdf) {
                 elementoPdf.style.display = 'none';
                 pdf.autoPrint();
