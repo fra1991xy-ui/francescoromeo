@@ -115,120 +115,165 @@
 <div id="modello-pdf-invisibile" style="display: none;">
 
     <!-- ================= PAGINA 1 ================= -->
-    <div class="pagina-pdf">
-        <div class="pdf-carta-intestata">
-            <img src="logo-romeo.png" style="width: 420px; max-width: 100%; height: auto;">
+    <div class="pagina-pdf pdf-a4">
+
+        <div class="pdf-header-logo">
+            <img src="logo-romeo.png" class="pdf-logo-romeo">
         </div>
 
-        <div class="pdf-blocco-destinatari">
-            <div class="pdf-dst-sinistra">
-                <div class="pdf-cornice-verde" id="pdf-identificativo-codice">COMUNE_DATA_</div>
-            </div>
-            <div class="pdf-dst-destra">
+        <div class="pdf-riga-intestazione">
+            <div class="pdf-codice" id="pdf-identificativo-codice">COMUNE_DATA_</div>
+
+            <div class="pdf-destinatari">
                 <p><strong>Spett.le Affidataria:</strong> <span id="pdf-txt-affidataria">-</span></p>
-                <p style="margin-top: 5px;"><strong>p.c. Spett.le Responsabile dei Lavori:</strong> <span id="pdf-txt-responsabile">-</span></p>
+                <p><strong>p.c. Spett.le Responsabile dei Lavori:</strong> <span id="pdf-txt-responsabile">-</span></p>
             </div>
         </div>
 
-        <div class="pdf-due-colonne">
-            <div class="pdf-col-sinistra">
-                <div class="pdf-titolo-riquadro">ATTIVITÀ SVOLTA DURANTE IL SOPRALLUOGO</div>
-                <div class="pdf-contenuto-riquadro" id="pdf-quadratini-attivita"></div>
-
-                <div style="margin-top: 15px;">
-                    <p><strong>Impresa Affidataria coinvolta:</strong></p>
-                    <p style="padding-left: 10px; font-style: italic;" id="pdf-coinvolta-affidataria">-</p>
-                </div>
-
-                <div style="margin-top: 15px;">
-                    <p><strong>Impresa Esecutrice coinvolta:</strong></p>
-                    <p style="padding-left: 10px; font-style: italic;" id="pdf-coinvolta-esecutrice">-</p>
-                </div>
-            </div>
-
-            <div class="pdf-col-destra">
-                <div class="pdf-titolo-riquadro">PLANIMETRIA GENERALE DI CANTIERE</div>
-                <div class="pdf-riquadro-planimetria">
-                    <img src="planimetria.png" style="width:100%; height:100%; object-fit:contain;">
-                </div>
-            </div>
+        <div class="pdf-barra-verde">
+            Report di Sopralluogo CSE – Cantiere “R3” STMicroelectronics Sito di Agrate Brianza (MB)
         </div>
 
-        <div class="pdf-cornice-verde-dettagli">
+        <div class="pdf-box-principale">
+
+            <div class="pdf-colonna-sx">
+                <div class="pdf-titolo-sezione">Attività svolta durante il sopralluogo:</div>
+                <div id="pdf-quadratini-attivita" class="pdf-elenco-attivita"></div>
+
+                <div class="pdf-blocco-impresa">
+                    <strong>Impresa Affidataria coinvolta:</strong><br>
+                    <span id="pdf-coinvolta-affidataria">-</span>
+                </div>
+
+                <div class="pdf-blocco-impresa">
+                    <strong>Impresa Esecutrice coinvolta:</strong><br>
+                    <span id="pdf-coinvolta-esecutrice">-</span>
+                </div>
+            </div>
+
+            <div class="pdf-colonna-dx">
+                <img src="planimetria.png" class="pdf-planimetria">
+            </div>
+
+        </div>
+
+        <div class="pdf-barra-verde pdf-barra-piccola">
             <strong>Fabbricato:</strong> <span id="pdf-txt-fabbricato">-</span>
-            &nbsp;&nbsp;|&nbsp;&nbsp;
+            &nbsp;&nbsp;
             <strong>Piano:</strong> <span id="pdf-txt-piano">-</span>
         </div>
 
-        <div class="pdf-footer-aziendale">
-            <div class="pdf-fa-sinistra">
-                <img src="certificazioni.png" style="width: 260px; height:auto;">
-            </div>
-            <div class="pdf-fa-destra">
-                <strong>Il CSE p.i.e. <span id="pdf-firma-nome-p1">-</span></strong><br>
-                Romeo Safety Italia S.r.l.
+        <div class="pdf-sopralluogo">
+            <span>Sopralluogo effettuato da:</span>
+            <span class="pdf-checkbox"></span>
+            <strong id="pdf-firma-nome-p1">-</strong>
+        </div>
+
+        <div class="pdf-spazio-bianco"></div>
+
+        <div class="pdf-titolo-basso">
+            ASPETTI – IMPATTI E RELATIVE MISURE DI PREVENZIONE E PROTEZIONE
+        </div>
+
+        <div class="pdf-footer">
+            <img src="certificazioni.png" class="pdf-certificazioni">
+
+            <div class="pdf-footer-testo">
+                <strong>Romeo Safety Italia S.r.l.</strong><br>
+                Sede: Via Imperia, 25 - 20142 MILANO<br>
+                Tel. 02/84.800.210 · C.F. e P.IVA 12689530157
             </div>
         </div>
+
     </div>
 
     <div class="html2pdf__page-break"></div>
 
     <!-- ================= PAGINA 2 ================= -->
-    <div class="pagina-pdf">
-        <div class="pdf-carta-intestata">
-            <img src="logo-romeo.png" style="width: 420px; max-width: 100%; height: auto;">
+    <div class="pagina-pdf pdf-a4">
+
+        <div class="pdf-header-logo">
+            <img src="logo-romeo.png" class="pdf-logo-romeo">
         </div>
 
-        <div class="pdf-contenitore-ia-formato">
-            <div class="pdf-ia-sezione-titolo">RELAZIONE TECNICA DI SOPRALLUOGO</div>
-            <div class="pdf-ia-testo-blocco" id="pdf-ia-descrizione">-</div>
-            <div class="pdf-striscia-nera-separatore"></div>
-            <div class="pdf-ia-testo-blocco" id="pdf-ia-misure">-</div>
-            <div class="pdf-striscia-nera-separatore"></div>
-            <div class="pdf-ia-testo-blocco" id="pdf-ia-correttive">-</div>
+        <div class="pdf-tabella-verde">
+
+            <div class="pdf-riga-fabbricato">
+                <strong>Fabbricato:</strong> <span id="pdf-txt-fabbricato-p2">-</span>
+                &nbsp;&nbsp;
+                <strong>Piano:</strong> <span id="pdf-txt-piano-p2">-</span>
+            </div>
+
+            <div class="pdf-relazione">
+                <strong>Descrizione attività:</strong>
+                <div id="pdf-ia-descrizione">-</div>
+
+                <strong>Misure di sicurezza attuate:</strong>
+                <div id="pdf-ia-misure">-</div>
+
+                <strong>Misure correttive:</strong>
+                <div id="pdf-ia-correttive">-</div>
+            </div>
+
+            <div id="pdf-quadratini-tempistiche" class="pdf-tempistiche"></div>
+
+            <div class="pdf-area-foto">
+
+                <div class="pdf-label-verticale">foto NC n.1</div>
+
+                <div class="pdf-foto-box">
+                    <img id="pdf-img-cantiere-generale" src="" class="pdf-foto-img" style="display:none;">
+                    <div id="pdf-placeholder-img1" class="pdf-placeholder">foto</div>
+                    <div class="pdf-caption">Foto1 - non conformità</div>
+                </div>
+
+                <div class="pdf-foto-box">
+                    <img id="pdf-foto-2" src="" class="pdf-foto-img" style="display:none;">
+                    <div id="pdf-placeholder-img2" class="pdf-placeholder">foto</div>
+                    <div class="pdf-caption">Foto 2</div>
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="pdf-sezione-tempistiche" id="pdf-quadratini-tempistiche"></div>
+        <div class="pdf-sospese">
+            sospese: ☒ NON APPLICABILE - ☐ APPLICABILE
+        </div>
 
-        <div style="margin-top: 15px;">
-            <div class="pdf-titolo-riquadro">DOCUMENTAZIONE FOTOGRAFICA RILEVATA</div>
+        <table class="pdf-tabella-attivita">
+            <tr>
+                <th>Attività</th>
+                <th>Data Sospensione attività</th>
+                <th>Attività sospesa</th>
+                <th>Data ripresa attività</th>
+                <th>Descrizione dell’adempimento</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>-</td>
+                <td>Lavori in quota</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+        </table>
 
-            <div class="pdf-griglia-foto-stampa">
-                <div class="pdf-box-foto-stampa">
-                    <img id="pdf-img-cantiere-generale" src="" style="display:none; width:100%; height:100%; object-fit:contain; padding:8px;">
-                    <div id="pdf-placeholder-img1" class="pdf-placeholder-testo">Foto 1: Panoramica Violazione</div>
-                </div>
+        <div class="pdf-firma-finale">
+            Il CSE p.i.e. <strong id="pdf-firma-nome-p2">-</strong>
+        </div>
 
-                <div class="pdf-box-foto-stampa">
-                    <img id="pdf-foto-2" src="" style="display:none; width:100%; height:100%; object-fit:contain; padding:8px;">
-                    <div id="pdf-placeholder-img2" class="pdf-placeholder-testo">Foto 2: Dettaglio Tecnico</div>
-                </div>
+        <div class="pdf-footer pdf-footer-p2">
+            <img src="certificazioni.png" class="pdf-certificazioni">
+
+            <div class="pdf-footer-testo">
+                <strong>Romeo Safety Italia S.r.l.</strong><br>
+                Sede: Via Imperia, 25 - 20142 MILANO<br>
+                Tel. 02/84.800.210 · C.F. e P.IVA 12689530157
             </div>
         </div>
 
-        <div class="pdf-footer-aziendale-firme">
-            <div class="pdf-fa-firme-area">
-                <div class="pdf-firma-box">
-                    <p><strong>Il CSE p.i.e. <span id="pdf-firma-nome-p2">-</span></strong></p>
-                    <div style="margin-top: 12mm;">___________________________</div>
-                </div>
-
-                <div class="pdf-firma-box" style="text-align: right;">
-                    <p><strong>Per Presa Visione e Accettazione l'Impresa</strong></p>
-                    <div style="margin-top: 12mm;">___________________________</div>
-                </div>
-            </div>
-
-            <div class="pdf-riga-dati-fiscali">
-                Romeo Safety Italia S.r.l. · Sede: Via Imperia, 25 - 20142 MILANO · Tel. 02/84.800.210<br>
-                C.F. e P.IVA 12689530157
-            </div>
-
-            <div style="margin-top: 8px;">
-                <img src="certificazioni.png" style="width:260px; height:auto;">
-            </div>
-        </div>
     </div>
+
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
