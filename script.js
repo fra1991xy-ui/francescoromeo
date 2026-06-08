@@ -261,6 +261,8 @@ if (form) {
 
             const radioTempistica = document.querySelector('input[name="tempistica_sicurezza"]:checked');
             const tempistica_sicurezza = radioTempistica ? radioTempistica.value : "";
+            const radioSospensione = document.querySelector('input[name="sospensione_lavori"]:checked');
+const sospensioneLavori = radioSospensione ? radioSospensione.value : "NO";
 
             const risultatoIA = await chiediAIA(noteAppunto);
 
@@ -280,6 +282,7 @@ esecutrice: esecutrice,
                 fabbricato: fabbricato,
                 piano: piano,
                 tempistica_sicurezza: tempistica_sicurezza,
+                sospensioneLavori: sospensioneLavori,
                 attivita: attivitaScelte,
                 data: dataAttuale,
                 foto1: foto1Base64,
@@ -472,14 +475,29 @@ pdf.text(c.esecutrice || "-", 22, y + 5);
     }
 
     pdf.setFillColor(...verde);
-    pdf.rect(15, 128, 180, 8, "FD");
-    pdf.setFont(undefined, "bold");
-    pdf.text(`Fabbricato: ${c.fabbricato || "-"}    Piano: ${c.piano || "-"}`, 105, 133, { align: "center" });
+pdf.rect(15, 128, 180, 8, "FD");
+
+pdf.setFont(undefined, "bold");
+pdf.setFontSize(7.5);
+
+const checkSI = c.sospensioneLavori === "SI" ? "[X] SI" : "[ ] SI";
+const checkNO = c.sospensioneLavori === "NO" ? "[X] NO" : "[ ] NO";
+
+pdf.text(
+    `Attività lavorative sospese, art. 92 c. 2 lett. f) D.Lgs. 81/2008 durante il sopralluogo    ${checkSI}    ${checkNO}`,
+    105,
+    133,
+    { align: "center" }
+);
 
     pdf.setFillColor(...verde);
-    pdf.rect(15, 155, 115, 8, "F");
-    pdf.setFontSize(10);
-    pdf.text(`Sopralluogo effettuato da:  ☐  ${c.tecnico || "-"}`, 18, 161);
+pdf.rect(15, 155, 115, 8, "F");
+
+pdf.setFont(undefined, "bold");
+pdf.setFontSize(9);
+pdf.text(`Sopralluogo effettuato da: ${c.tecnico || "-"}`, 18, 161);
+
+pdf.setFont(undefined, "normal");
 
     pdf.setFontSize(8);
     pdf.text("ASPETTI – IMPATTI E RELATIVE MISURE DI PREVENZIONE E PROTEZIONE", 15, 212);
