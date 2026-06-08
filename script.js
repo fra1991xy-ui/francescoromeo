@@ -390,11 +390,13 @@ async function scaricaPDF(indice) {
         pdf.setTextColor(0, 0, 0);
     }
 
-    function testoMultiriga(testo, x, y, larghezza, altezzaRiga = 4) {
-        const righe = pdf.splitTextToSize(testo || "-", larghezza);
-        pdf.text(righe, x, y);
-        return y + righe.length * altezzaRiga;
-    }
+    function testoMultiriga(testo, x, y, larghezza, altezzaRiga = 3.2) {
+    const righe = pdf.splitTextToSize(testo || "-", larghezza);
+
+    pdf.text(righe, x, y);
+
+    return y + (righe.length * altezzaRiga) + 1.5;
+}
 
     // ======================
     // PAGINA 1
