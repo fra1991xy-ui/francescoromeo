@@ -582,7 +582,7 @@ async function scaricaPDF(indice) {
 
     footer();
 
-    pdf.save(`Verbale_CSE_${(c.nome || "report").toUpperCase()}.pdf`);
+        pdf.save(`Verbale_CSE_${(c.nome || "report").toUpperCase()}.pdf`);
 }
 
 mostraCantieri();
