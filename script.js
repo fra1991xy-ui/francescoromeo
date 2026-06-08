@@ -251,6 +251,7 @@ if (form) {
 
             const nome = valore('nome-cantiere');
             const affidataria = valore('impresa-affidataria');
+            const referenteAffidataria = valore('referente-affidataria');
             const esecutrice = valore('impresa-esecutrice');
             const noteAppunto = valore('note-cantiere');
             const respLavori = valore('responsabile-lavori');
@@ -272,7 +273,8 @@ if (form) {
             const nuovoReport = {
                 nome: nome,
                 affidataria: affidataria,
-                esecutrice: esecutrice,
+referenteAffidataria: referenteAffidataria,
+esecutrice: esecutrice,
                 respLavori: respLavori,
                 tecnico: tecnico,
                 fabbricato: fabbricato,
@@ -408,9 +410,15 @@ async function scaricaPDF(indice) {
     pdf.text(`${(c.nome || "").toUpperCase()}_${(c.data || "").replaceAll("/", "")}_`, 18, 45);
 
     pdf.setFont(undefined, "bold");
-    pdf.text(`Spett.le Affidataria: ${c.affidataria || "-"}`, 185, 45, { align: "right" });
-    pdf.text(`p.c. Spett.le Responsabile dei Lavori: ${c.respLavori || "-"}`, 185, 53, { align: "right" });
-    pdf.setFont(undefined, "normal");
+pdf.text(`Spett.le Affidataria: ${c.affidataria || "-"}`, 185, 45, { align: "right" });
+
+pdf.setFont(undefined, "normal");
+pdf.text(`c.a. ${c.referenteAffidataria || "-"}`, 185, 50, { align: "right" });
+
+pdf.setFont(undefined, "bold");
+pdf.text(`p.c. Spett.le Responsabile dei Lavori: ${c.respLavori || "-"}`, 185, 58, { align: "right" });
+
+pdf.setFont(undefined, "normal");
 
     pdf.setFillColor(...verde);
     pdf.rect(15, 63, 180, 7, "FD");
@@ -444,16 +452,20 @@ async function scaricaPDF(indice) {
     });
 
     y += 8;
-    pdf.setFont(undefined, "bold");
-    pdf.text("Impresa Affidataria coinvolta:", 18, y);
-    pdf.setFont(undefined, "normal");
-    pdf.text(c.affidataria || "-", 18, y + 5);
 
-    y += 18;
-    pdf.setFont(undefined, "bold");
-    pdf.text("Impresa Esecutrice coinvolta:", 18, y);
-    pdf.setFont(undefined, "normal");
-    pdf.text(c.esecutrice || "-", 18, y + 5);
+pdf.setFont(undefined, "bold");
+pdf.text("Impresa Affidataria coinvolta:", 18, y);
+
+pdf.setFont(undefined, "normal");
+pdf.text(c.affidataria || "-", 22, y + 5);
+
+y += 14;
+
+pdf.setFont(undefined, "bold");
+pdf.text("Impresa Esecutrice coinvolta:", 18, y);
+
+pdf.setFont(undefined, "normal");
+pdf.text(c.esecutrice || "-", 22, y + 5);
 
     if (planimetria) {
         pdf.addImage(planimetria, "PNG", 130, 75, 58, 48);
