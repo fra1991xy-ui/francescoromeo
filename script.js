@@ -306,11 +306,12 @@ if (form) {
             alert("Errore durante la generazione del report. Apri F12 > Console per vedere il dettaglio.");
         }
 
-        if (btnSalvaForm) {
+                if (btnSalvaForm) {
             btnSalvaForm.textContent = "Genera con IA e Salva";
             btnSalvaForm.disabled = false;
         }
     });
+}
 
 function condividiReport(indice) {
     let cantieri = JSON.parse(localStorage.getItem('databaseCantieri')) || [];
