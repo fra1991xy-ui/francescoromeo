@@ -189,6 +189,7 @@ function convertiInBase64(inputElement) {
 async function chiediAIA(appuntoUtente) {
 
     try {
+
         const risposta = await fetch(
             "https://romeo.fra-1991xy.workers.dev",
             {
@@ -215,6 +216,7 @@ async function chiediAIA(appuntoUtente) {
         };
 
     } catch (errore) {
+
         console.error("Errore AI:", errore);
 
         return {
@@ -224,6 +226,9 @@ async function chiediAIA(appuntoUtente) {
         };
     }
 }
+
+if (form) {
+
     form.addEventListener('submit', async function (evento) {
         evento.preventDefault();
 
