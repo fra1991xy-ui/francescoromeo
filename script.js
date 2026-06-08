@@ -463,17 +463,17 @@ pdf.text("Impresa Affidataria coinvolta:", 18, y);
 pdf.setFont(undefined, "normal");
 pdf.text(c.affidataria || "-", 22, y + 5);
 
-y += 11;
+y += 13;
 
 pdf.setFont(undefined, "bold");
 pdf.text("Impresa Esecutrice coinvolta:", 18, y);
 
 pdf.setFont(undefined, "normal");
-pdf.text(c.esecutrice || "Impresa esecutrice non indicata", 22, y + 4);
+pdf.text(c.esecutrice || "Impresa esecutrice non indicata", 22, y + 5);
 
-    if (planimetria) {
-        pdf.addImage(planimetria, "PNG", 130, 75, 58, 48);
-    }
+if (planimetria) {
+    pdf.addImage(planimetria, "PNG", 130, 75, 58, 48);
+}
 
     pdf.setFillColor(...verde);
 pdf.rect(15, 128, 180, 8, "FD");
@@ -540,12 +540,11 @@ pdf.setFont(undefined, "normal");
     pdf.line(15, 120, 195, 120);
 
    pdf.setDrawColor(0, 0, 0);
-pdf.rect(15, 122, 180, 22);
+pdf.rect(15, y2 + 4, 180, 18);
 
 pdf.setFontSize(6.5);
 pdf.setFont(undefined, "bold");
-pdf.text("Disposizioni operative e scadenze:", 18, 127);
-
+pdf.text("Disposizioni operative e scadenze:", 18, y2 + 9);
 pdf.setFont(undefined, "normal");
 
 const tempistiche = [
@@ -557,7 +556,7 @@ const tempistiche = [
 ];
 
 let xTemp = 18;
-let yTemp = 132;
+let yTemp = y2 + 14;
 
 tempistiche.forEach((t, i) => {
     const check = c.tempistica_sicurezza === t ? "[X]" : "[ ]";
