@@ -189,9 +189,8 @@ function convertiInBase64(inputElement) {
 async function chiediAIA(appuntoUtente) {
 
     try {
-
         const risposta = await fetch(
-            "https://fraromeo.fra-1991xy.workers.dev",
+            "https://romeo.fra-1991xy.workers.dev",
             {
                 method: "POST",
                 headers: {
@@ -216,7 +215,6 @@ async function chiediAIA(appuntoUtente) {
         };
 
     } catch (errore) {
-
         console.error("Errore AI:", errore);
 
         return {
