@@ -210,9 +210,10 @@ async function chiediAIA(appuntoUtente) {
         }
 
         return {
-            descrizione: dati.descrizione || "-",
-            misure: dati.misure || "-",
-            correttive: dati.correttive || "-"
+    descrizione: typeof dati.descrizione === "object" ? JSON.stringify(dati.descrizione) : (dati.descrizione || "-"),
+    misure: typeof dati.misure === "object" ? JSON.stringify(dati.misure) : (dati.misure || "-"),
+    correttive: typeof dati.correttive === "object" ? JSON.stringify(dati.correttive) : (dati.correttive || "-")
+};
         };
 
     } catch (errore) {
@@ -468,7 +469,7 @@ pdf.setFont(undefined, "bold");
 pdf.text("Impresa Esecutrice coinvolta:", 18, y);
 
 pdf.setFont(undefined, "normal");
-pdf.text(c.esecutrice || "-", 22, y + 5);
+pdf.text(c.esecutrice || "Impresa esecutrice non indicata", 22, y + 4);
 
     if (planimetria) {
         pdf.addImage(planimetria, "PNG", 130, 75, 58, 48);
@@ -538,10 +539,10 @@ pdf.setFont(undefined, "normal");
 
     pdf.line(15, 120, 195, 120);
 
-    pdf.setDrawColor(0, 0, 0);
-pdf.rect(15, 122, 180, 18);
+   pdf.setDrawColor(0, 0, 0);
+pdf.rect(15, 122, 180, 22);
 
-pdf.setFontSize(7);
+pdf.setFontSize(6.5);
 pdf.setFont(undefined, "bold");
 pdf.text("Disposizioni operative e scadenze:", 18, 127);
 
@@ -562,11 +563,11 @@ tempistiche.forEach((t, i) => {
     const check = c.tempistica_sicurezza === t ? "[X]" : "[ ]";
     pdf.text(`${check} ${t}`, xTemp, yTemp);
 
-    if (i === 1) {
+    if (i === 1 || i === 3) {
         xTemp = 18;
         yTemp += 5;
     } else {
-        xTemp += 85;
+        xTemp = 103;
     }
 });
 
