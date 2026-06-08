@@ -339,6 +339,7 @@ function condividiReport(indice) {
         window.open(`mailto:?subject=Report CSE ${encodeURIComponent(c.nome || "")}&body=${encodeURIComponent(testoCondivisione)}`);
     }
 }
+
 async function scaricaPDF(indice) {
     const { jsPDF } = window.jspdf;
 
@@ -356,12 +357,8 @@ async function scaricaPDF(indice) {
         return new Promise((resolve) => {
             const img = new Image();
             img.crossOrigin = "anonymous";
-            img.onload = function () {
-                resolve(img);
-            };
-            img.onerror = function () {
-                resolve(null);
-            };
+            img.onload = () => resolve(img);
+            img.onerror = () => resolve(null);
             img.src = src;
         });
     }
@@ -373,32 +370,26 @@ async function scaricaPDF(indice) {
     const verde = [146, 208, 80];
 
     function intestazione() {
-        if (logo) {
-            pdf.addImage(logo, "PNG", 20, 12, 170, 18);
-        }
+        if (logo) pdf.addImage(logo, "PNG", 20, 12, 170, 18);
+        pdf.setTextColor(0, 0, 0);
     }
 
     function footer() {
-        if (certificazioni) {
-            pdf.addImage(certificazioni, "PNG", 18, 262, 55, 18);
-        }
+        if (certificazioni) pdf.addImage(certificazioni, "PNG", 18, 262, 55, 18);
 
         pdf.setFontSize(7);
         pdf.setTextColor(80, 80, 80);
         pdf.text("Romeo Safety Italia S.r.l.", 185, 264, { align: "right" });
         pdf.text("Sede: Via Imperia, 25 - 20142 MILANO", 185, 268, { align: "right" });
         pdf.text("Tel. 02/84.800.210 · C.F. e P.IVA 12689530157", 185, 272, { align: "right" });
-
         pdf.setTextColor(0, 0, 0);
     }
 
     function testoMultiriga(testo, x, y, larghezza, altezzaRiga = 3.2) {
-    const righe = pdf.splitTextToSize(testo || "-", larghezza);
-
-    pdf.text(righe, x, y);
-
-    return y + (righe.length * altezzaRiga) + 1.5;
-}
+        const righe = pdf.splitTextToSize(testo || "-", larghezza);
+        pdf.text(righe, x, y);
+        return y + (righe.length * altezzaRiga) + 1.5;
+    }
 
     // ======================
     // PAGINA 1
@@ -410,28 +401,28 @@ async function scaricaPDF(indice) {
     pdf.text(`${(c.nome || "").toUpperCase()}_${(c.data || "").replaceAll("/", "")}_`, 18, 45);
 
     pdf.setFont(undefined, "bold");
-pdf.text(`Spett.le Affidataria: ${c.affidataria || "-"}`, 185, 45, { align: "right" });
+    pdf.text(`Spett.le Affidataria: ${c.affidataria || "-"}`, 185, 45, { align: "right" });
 
-pdf.setFont(undefined, "normal");
-pdf.text(`c.a. ${c.referenteAffidataria || "-"}`, 185, 50, { align: "right" });
+    pdf.setFont(undefined, "normal");
+    pdf.text(`c.a. ${c.referenteAffidataria || "-"}`, 185, 50, { align: "right" });
 
-pdf.setFont(undefined, "bold");
-pdf.text(`p.c. Spett.le Responsabile dei Lavori: ${c.respLavori || "-"}`, 185, 58, { align: "right" });
-
-pdf.setFont(undefined, "normal");
+    pdf.setFont(undefined, "bold");
+    pdf.text(`p.c. Spett.le Responsabile dei Lavori: ${c.respLavori || "-"}`, 185, 58, { align: "right" });
+    pdf.setFont(undefined, "normal");
 
     pdf.setFillColor(...verde);
     pdf.rect(15, 63, 180, 7, "FD");
+
     pdf.setFont(undefined, "bold");
     pdf.setFontSize(8);
     pdf.text("Report di Sopralluogo CSE – Cantiere “R3” STMicroelectronics Sito di Agrate Brianza (MB)", 105, 68, { align: "center" });
 
     pdf.setDrawColor(0, 0, 0);
     pdf.rect(15, 70, 180, 58);
-
     pdf.line(125, 70, 125, 128);
 
     pdf.setFontSize(8);
+    pdf.setFont(undefined, "bold");
     pdf.text("Attività svolta durante il sopralluogo:", 18, 77);
 
     const elencoAttivita = [
@@ -443,7 +434,6 @@ pdf.setFont(undefined, "normal");
     ];
 
     let y = 83;
-
     elencoAttivita.forEach(att => {
         const check = (c.attivita || []).includes(att) ? "[X]" : "[ ]";
         pdf.setFont(undefined, "normal");
@@ -451,51 +441,48 @@ pdf.setFont(undefined, "normal");
         y += 5;
     });
 
-    y += 8;
+    y += 5;
 
-pdf.setFont(undefined, "bold");
-pdf.text("Impresa Affidataria coinvolta:", 18, y);
+    pdf.setFont(undefined, "bold");
+    pdf.text("Impresa Affidataria coinvolta:", 18, y);
+    pdf.setFont(undefined, "normal");
+    pdf.text(c.affidataria || "-", 22, y + 5);
 
-pdf.setFont(undefined, "normal");
-pdf.text(c.affidataria || "-", 22, y + 5);
+    y += 11;
 
-y += 13;
+    pdf.setFont(undefined, "bold");
+    pdf.text("Impresa Esecutrice coinvolta:", 18, y);
+    pdf.setFont(undefined, "normal");
+    pdf.text(c.esecutrice || "Impresa esecutrice non indicata", 22, y + 5);
 
-pdf.setFont(undefined, "bold");
-pdf.text("Impresa Esecutrice coinvolta:", 18, y);
-
-pdf.setFont(undefined, "normal");
-pdf.text(c.esecutrice || "Impresa esecutrice non indicata", 22, y + 5);
-
-if (planimetria) {
-    pdf.addImage(planimetria, "PNG", 130, 75, 58, 48);
-}
+    if (planimetria) {
+        pdf.addImage(planimetria, "PNG", 130, 75, 58, 48);
+    }
 
     pdf.setFillColor(...verde);
-pdf.rect(15, 128, 180, 8, "FD");
+    pdf.rect(15, 128, 180, 8, "FD");
 
-pdf.setFont(undefined, "bold");
-pdf.setFontSize(7.5);
+    pdf.setFont(undefined, "bold");
+    pdf.setFontSize(7.3);
 
-const checkSI = c.sospensioneLavori === "SI" ? "[X] SI" : "[ ] SI";
-const checkNO = c.sospensioneLavori === "NO" ? "[X] NO" : "[ ] NO";
+    const checkSI = c.sospensioneLavori === "SI" ? "[X] SI" : "[ ] SI";
+    const checkNO = c.sospensioneLavori === "NO" || !c.sospensioneLavori ? "[X] NO" : "[ ] NO";
 
-pdf.text(
-    `Attività lavorative sospese, art. 92 c. 2 lett. f) D.Lgs. 81/2008 durante il sopralluogo    ${checkSI}    ${checkNO}`,
-    105,
-    133,
-    { align: "center" }
-);
+    pdf.text(
+        `Attività lavorative sospese, art. 92 c. 2 lett. f) D.Lgs. 81/2008 durante il sopralluogo    ${checkSI}    ${checkNO}`,
+        105,
+        133,
+        { align: "center" }
+    );
 
     pdf.setFillColor(...verde);
-pdf.rect(15, 155, 115, 8, "F");
+    pdf.rect(15, 155, 115, 8, "F");
 
-pdf.setFont(undefined, "bold");
-pdf.setFontSize(9);
-pdf.text(`Sopralluogo effettuato da: ${c.tecnico || "-"}`, 18, 161);
+    pdf.setFont(undefined, "bold");
+    pdf.setFontSize(9);
+    pdf.text(`Sopralluogo effettuato da: ${c.tecnico || "-"}`, 18, 161);
 
-pdf.setFont(undefined, "normal");
-
+    pdf.setFont(undefined, "normal");
     pdf.setFontSize(8);
     pdf.text("ASPETTI – IMPATTI E RELATIVE MISURE DI PREVENZIONE E PROTEZIONE", 15, 212);
 
@@ -506,7 +493,6 @@ pdf.setFont(undefined, "normal");
     // ======================
 
     pdf.addPage();
-
     intestazione();
 
     pdf.setFillColor(...verde);
@@ -516,116 +502,133 @@ pdf.setFont(undefined, "normal");
     pdf.setFont(undefined, "bold");
     pdf.text(`Fabbricato: ${c.fabbricato || "-"}    Piano: ${c.piano || "-"}`, 18, 47);
 
-    pdf.rect(15, 50, 180, 70);
+    let y2 = 58;
 
     pdf.setFont(undefined, "bold");
-    pdf.text("Descrizione attività:", 18, 58);
+    pdf.text("Descrizione attività:", 18, y2);
     pdf.setFont(undefined, "normal");
-    let y2 = testoMultiriga(c.iaDescrizione, 18, 63, 170, 4);
+    y2 = testoMultiriga(c.iaDescrizione, 18, y2 + 5, 170);
+
+    pdf.line(18, y2 + 1, 188, y2 + 1);
+    y2 += 6;
 
     pdf.setFont(undefined, "bold");
-    pdf.text("Misure di sicurezza attuate:", 18, y2 + 3);
+    pdf.text("Misure di sicurezza attuate:", 18, y2);
     pdf.setFont(undefined, "normal");
-    y2 = testoMultiriga(c.iaMisure, 18, y2 + 8, 170, 4);
+    y2 = testoMultiriga(c.iaMisure, 18, y2 + 5, 170);
+
+    pdf.line(18, y2 + 1, 188, y2 + 1);
+    y2 += 6;
 
     pdf.setFont(undefined, "bold");
-    pdf.text("Misure correttive:", 18, y2 + 3);
+    pdf.text("Misure correttive:", 18, y2);
     pdf.setFont(undefined, "normal");
-    testoMultiriga(c.iaCorrettive, 18, y2 + 8, 170, 4);
+    y2 = testoMultiriga(c.iaCorrettive, 18, y2 + 5, 170);
 
-    pdf.line(15, 120, 195, 120);
+    pdf.rect(15, 50, 180, Math.max(55, y2 - 48));
 
-   pdf.setDrawColor(0, 0, 0);
-pdf.rect(15, y2 + 4, 180, 18);
+    // Disposizioni compatte sotto il testo
+    let yDisp = y2 + 5;
 
-pdf.setFontSize(6.5);
-pdf.setFont(undefined, "bold");
-pdf.text("Disposizioni operative e scadenze:", 18, y2 + 9);
-pdf.setFont(undefined, "normal");
+    pdf.setDrawColor(0, 0, 0);
+    pdf.rect(15, yDisp, 180, 20);
 
-const tempistiche = [
-    "Attività sospesa fino ad adempimento",
-    "Messa in sicurezza immediata",
-    "Messa in sicurezza entro 2 giorni",
-    "Messa in sicurezza entro 3 giorni",
-    "Messa in sicurezza giornata"
-];
+    pdf.setFontSize(6.5);
+    pdf.setFont(undefined, "bold");
+    pdf.text("Disposizioni operative e scadenze:", 18, yDisp + 5);
 
-let xTemp = 18;
-let yTemp = y2 + 14;
+    pdf.setFont(undefined, "normal");
 
-tempistiche.forEach((t, i) => {
-    const check = c.tempistica_sicurezza === t ? "[X]" : "[ ]";
-    pdf.text(`${check} ${t}`, xTemp, yTemp);
+    const tempistiche = [
+        "Attività sospesa fino ad adempimento",
+        "Messa in sicurezza immediata",
+        "Messa in sicurezza entro 2 giorni",
+        "Messa in sicurezza entro 3 giorni",
+        "Messa in sicurezza giornata"
+    ];
 
-    if (i === 1 || i === 3) {
-        xTemp = 18;
-        yTemp += 5;
-    } else {
-        xTemp = 103;
+    const posizioni = [
+        [18, yDisp + 10],
+        [103, yDisp + 10],
+        [18, yDisp + 15],
+        [103, yDisp + 15],
+        [18, yDisp + 19]
+    ];
+
+    tempistiche.forEach((t, i) => {
+        const check = c.tempistica_sicurezza === t ? "[X]" : "[ ]";
+        pdf.text(`${check} ${t}`, posizioni[i][0], posizioni[i][1]);
+    });
+
+    // Area foto sempre sotto le disposizioni
+    let yFoto = yDisp + 27;
+
+    if (yFoto > 155) {
+        yFoto = 155;
     }
-});
 
-    // Area foto
-    pdf.rect(15, 150, 180, 70);
+    pdf.rect(15, yFoto, 180, 66);
     pdf.setFillColor(...verde);
-    pdf.rect(15, 150, 10, 70, "FD");
+    pdf.rect(15, yFoto, 10, 66, "FD");
 
     pdf.setFontSize(8);
-    pdf.text("foto NC n.1", 20, 190, { angle: 90 });
+    pdf.text("foto NC n.1", 20, yFoto + 39, { angle: 90 });
 
-    pdf.line(105, 150, 105, 220);
+    pdf.line(105, yFoto, 105, yFoto + 66);
 
     if (c.foto1) {
-        pdf.addImage(c.foto1, "JPEG", 35, 158, 60, 45);
+        pdf.addImage(c.foto1, "JPEG", 32, yFoto + 6, 68, 48);
     } else {
         pdf.setFontSize(24);
-        pdf.text("foto", 60, 185, { align: "center" });
+        pdf.text("foto", 60, yFoto + 35, { align: "center" });
     }
 
     if (c.foto2) {
-        pdf.addImage(c.foto2, "JPEG", 120, 158, 60, 45);
+        pdf.addImage(c.foto2, "JPEG", 112, yFoto + 6, 68, 48);
     } else {
         pdf.setFontSize(24);
-        pdf.text("foto", 150, 185, { align: "center" });
+        pdf.text("foto", 150, yFoto + 35, { align: "center" });
     }
 
     pdf.setFontSize(8);
-    pdf.text("Foto1 - non conformità", 65, 215, { align: "center" });
-    pdf.text("Foto 2", 150, 215, { align: "center" });
+    pdf.text("Foto1 - non conformità", 65, yFoto + 61, { align: "center" });
+    pdf.text("Foto 2", 150, yFoto + 61, { align: "center" });
+
+    let yTab = yFoto + 74;
 
     pdf.setFontSize(8);
-    pdf.text("sospese: ☒ NON APPLICABILE - ☐ APPLICABILE", 15, 228);
+    pdf.text("sospese: ☒ NON APPLICABILE - ☐ APPLICABILE", 15, yTab);
+
+    yTab += 4;
 
     pdf.setFillColor(...verde);
-    pdf.rect(15, 232, 180, 7, "FD");
+    pdf.rect(15, yTab, 180, 7, "FD");
+
     pdf.setFontSize(7);
-    pdf.text("Attività", 18, 237);
-    pdf.text("Data Sospensione attività", 40, 237);
-    pdf.text("Attività sospesa", 85, 237);
-    pdf.text("Data ripresa attività", 125, 237);
-    pdf.text("Descrizione dell’adempimento", 155, 237);
+    pdf.text("Attività", 18, yTab + 5);
+    pdf.text("Data Sospensione attività", 40, yTab + 5);
+    pdf.text("Attività sospesa", 85, yTab + 5);
+    pdf.text("Data ripresa attività", 125, yTab + 5);
+    pdf.text("Descrizione dell’adempimento", 155, yTab + 5);
 
-    pdf.rect(15, 232, 180, 14);
-    pdf.line(35, 232, 35, 246);
-    pdf.line(80, 232, 80, 246);
-    pdf.line(120, 232, 120, 246);
-    pdf.line(150, 232, 150, 246);
-    pdf.line(15, 239, 195, 239);
+    pdf.rect(15, yTab, 180, 14);
+    pdf.line(35, yTab, 35, yTab + 14);
+    pdf.line(80, yTab, 80, yTab + 14);
+    pdf.line(120, yTab, 120, yTab + 14);
+    pdf.line(150, yTab, 150, yTab + 14);
+    pdf.line(15, yTab + 7, 195, yTab + 7);
 
-    pdf.text("1", 18, 244);
-    pdf.text("-", 40, 244);
-    pdf.text("Lavori in quota", 85, 244);
-    pdf.text("-", 125, 244);
-    pdf.text("-", 155, 244);
+    pdf.text("1", 18, yTab + 12);
+    pdf.text("-", 40, yTab + 12);
+    pdf.text("Lavori in quota", 85, yTab + 12);
+    pdf.text("-", 125, yTab + 12);
+    pdf.text("-", 155, yTab + 12);
 
     pdf.setFontSize(8);
     pdf.text("Il CSE p.i.e. Damiano Romeo", 185, 255, { align: "right" });
 
     footer();
 
-        pdf.save(`Verbale_CSE_${(c.nome || "report").toUpperCase()}.pdf`);
+    pdf.save(`Verbale_CSE_${(c.nome || "report").toUpperCase()}.pdf`);
 }
-
 mostraCantieri();
-    
