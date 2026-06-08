@@ -311,7 +311,6 @@ if (form) {
             btnSalvaForm.disabled = false;
         }
     });
-}
 
 function condividiReport(indice) {
     let cantieri = JSON.parse(localStorage.getItem('databaseCantieri')) || [];
