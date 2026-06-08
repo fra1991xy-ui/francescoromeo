@@ -187,69 +187,45 @@ function convertiInBase64(inputElement) {
 }
 
 async function chiediAIA(appuntoUtente) {
-    const OPENAI_API_KEY = "INCOLLA_QUI_LA_TUA_CHIAVE_OPENAI";
-
-    const prompt = `
-Agisci come Coordinatore della Sicurezza in fase di Esecuzione senior, specializzato in cantieri industriali.
-
-Trasforma l'appunto del sopralluogo in un verbale tecnico professionale.
-
-REGOLE:
-- usa linguaggio tecnico da CSE;
-- non essere generico;
-- indica rischi concreti;
-- richiama il D.Lgs. 81/08 quando pertinente;
-- scrivi in modo chiaro, prescrittivo e professionale;
-- rispondi SOLO con JSON valido;
-- le chiavi devono essere esattamente: descrizione, misure, correttive.
-
-APPUNTO:
-${appuntoUtente}
-`;
 
     try {
-        const risposta = await fetch("https://api.openai.com/v1/chat/completions", {
-            method: "POST",
-            headers: {
-                "Authorization": "Bearer " + OPENAI_API_KEY,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                model: "gpt-4o-mini",
-                response_format: { type: "json_object" },
-                messages: [
-                    {
-                        role: "system",
-                        content: "Sei un CSE senior italiano. Rispondi solo con JSON valido."
-                    },
-                    {
-                        role: "user",
-                        content: prompt
-                    }
-                ]
-            })
-        });
+
+        const risposta = await fetch(
+            "https://fraromeo.fra-1991xy.workers.dev",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    appunto: appuntoUtente
+                })
+            }
+        );
 
         const dati = await risposta.json();
 
         if (!risposta.ok) {
-            throw new Error(dati.error?.message || "Errore OpenAI");
+            throw new Error(dati.error || "Errore AI");
         }
 
-        return JSON.parse(dati.choices[0].message.content);
+        return {
+            descrizione: dati.descrizione || "-",
+            misure: dati.misure || "-",
+            correttive: dati.correttive || "-"
+        };
 
     } catch (errore) {
+
         console.error("Errore AI:", errore);
 
         return {
-            descrizione: appuntoUtente,
-            misure: "Errore nel collegamento con OpenAI. Verificare chiave API, credito disponibile o console F12.",
-            correttive: "Riprovare dopo la verifica della configurazione API."
+            descrizione: "Errore generazione descrizione tecnica.",
+            misure: "Errore collegamento AI.",
+            correttive: "Verificare Cloudflare Worker o connessione."
         };
     }
 }
-
-if (form) {
     form.addEventListener('submit', async function (evento) {
         evento.preventDefault();
 
