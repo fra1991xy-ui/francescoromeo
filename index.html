@@ -88,6 +88,23 @@
                 </div>
 
                 <div class="gruppo-form">
+    <label>⛔ Attività lavorative sospese durante il sopralluogo?</label>
+
+    <div style="display:flex; gap:20px; margin-top:8px;">
+
+        <label>
+            <input type="radio" name="sospensione_lavori" value="SI">
+            SI
+        </label>
+
+        <label>
+            <input type="radio" name="sospensione_lavori" value="NO" checked>
+            NO
+        </label>
+
+    </div>
+</div>
+                <div class="gruppo-form">
                     <label>📝 Note e Appunti Rapidi di Cantiere (Per l'IA):</label>
                     <textarea id="note-cantiere" placeholder="Scrivi liberamente cosa hai riscontrato..." rows="4" required></textarea>
                 </div>
@@ -187,19 +204,7 @@
         </div>
 
     </div>
-    <div class="campo-form">
-    <label>Attività lavorative sospese?</label>
-    <div style="display:flex; gap:20px; margin:8px 0 14px 0;">
-        <label>
-            <input type="radio" name="sospensione_lavori" value="SI">
-            SI
-        </label>
-        <label>
-            <input type="radio" name="sospensione_lavori" value="NO" checked>
-            NO
-        </label>
-    </div>
-</div>
+    
     <!-- ================= PAGINA 2 ================= -->
     <div class="pagina-pdf pdf-a4">
 
