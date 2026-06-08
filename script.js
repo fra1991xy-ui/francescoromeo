@@ -538,23 +538,37 @@ pdf.setFont(undefined, "normal");
 
     pdf.line(15, 120, 195, 120);
 
-    pdf.setFontSize(7);
-    pdf.text("Disposizioni operative e scadenze:", 18, 126);
+    pdf.setDrawColor(0, 0, 0);
+pdf.rect(15, 122, 180, 18);
 
-    const tempistiche = [
-        "Attività sospesa fino ad adempimento",
-        "Messa in sicurezza immediata",
-        "Messa in sicurezza entro 2 giorni",
-        "Messa in sicurezza entro 3 giorni",
-        "Messa in sicurezza giornata"
-    ];
+pdf.setFontSize(7);
+pdf.setFont(undefined, "bold");
+pdf.text("Disposizioni operative e scadenze:", 18, 127);
 
-    let yt = 131;
-    tempistiche.forEach(t => {
-        const check = c.tempistica_sicurezza === t ? "[X]" : "[ ]";
-        pdf.text(`${check} ${t}`, 18, yt);
-        yt += 4;
-    });
+pdf.setFont(undefined, "normal");
+
+const tempistiche = [
+    "Attività sospesa fino ad adempimento",
+    "Messa in sicurezza immediata",
+    "Messa in sicurezza entro 2 giorni",
+    "Messa in sicurezza entro 3 giorni",
+    "Messa in sicurezza giornata"
+];
+
+let xTemp = 18;
+let yTemp = 132;
+
+tempistiche.forEach((t, i) => {
+    const check = c.tempistica_sicurezza === t ? "[X]" : "[ ]";
+    pdf.text(`${check} ${t}`, xTemp, yTemp);
+
+    if (i === 1) {
+        xTemp = 18;
+        yTemp += 5;
+    } else {
+        xTemp += 85;
+    }
+});
 
     // Area foto
     pdf.rect(15, 150, 180, 70);
@@ -610,7 +624,7 @@ pdf.setFont(undefined, "normal");
     pdf.text("-", 155, 244);
 
     pdf.setFontSize(8);
-    pdf.text(`Il CSE p.i.e. ${c.tecnico || "-"}`, 185, 255, { align: "right" });
+    pdf.text("Il CSE p.i.e. Damiano Romeo", 185, 255, { align: "right" });
 
     footer();
 
