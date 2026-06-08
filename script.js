@@ -187,9 +187,7 @@ function convertiInBase64(inputElement) {
 }
 
 async function chiediAIA(appuntoUtente) {
-
     try {
-
         const risposta = await fetch(
             "https://romeo.fra-1991xy.workers.dev",
             {
@@ -210,14 +208,12 @@ async function chiediAIA(appuntoUtente) {
         }
 
         return {
-    descrizione: typeof dati.descrizione === "object" ? JSON.stringify(dati.descrizione) : (dati.descrizione || "-"),
-    misure: typeof dati.misure === "object" ? JSON.stringify(dati.misure) : (dati.misure || "-"),
-    correttive: typeof dati.correttive === "object" ? JSON.stringify(dati.correttive) : (dati.correttive || "-")
-};
+            descrizione: dati.descrizione || "-",
+            misure: dati.misure || "-",
+            correttive: dati.correttive || "-"
         };
 
     } catch (errore) {
-
         console.error("Errore AI:", errore);
 
         return {
