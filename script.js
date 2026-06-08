@@ -462,7 +462,7 @@ pdf.text("Impresa Affidataria coinvolta:", 18, y);
 pdf.setFont(undefined, "normal");
 pdf.text(c.affidataria || "-", 22, y + 5);
 
-y += 14;
+y += 11;
 
 pdf.setFont(undefined, "bold");
 pdf.text("Impresa Esecutrice coinvolta:", 18, y);
