@@ -187,65 +187,66 @@ function convertiInBase64(inputElement) {
 }
 
 async function chiediAIA(appuntoUtente) {
-    const nota = appuntoUtente.trim().toLowerCase();
+    const OPENAI_API_KEY = "INCOLLA_QUI_LA_TUA_CHIAVE_OPENAI";
 
-    let rischio = "rischi interferenziali e condizioni operative non pienamente conformi";
-    let norma = "D.Lgs. 81/08, PSC e POS di cantiere";
-    let misuraSpecifica = "delimitazione dell’area, verifica DPI, coordinamento operativo e ripristino delle condizioni di sicurezza";
-    let prescrizione = "provvedere alla messa in sicurezza dell’area e alla verifica da parte del preposto prima della prosecuzione delle lavorazioni";
+    const prompt = `
+Agisci come Coordinatore della Sicurezza in fase di Esecuzione senior, specializzato in cantieri industriali.
 
-    if (nota.includes("parapetto") || nota.includes("copertura") || nota.includes("quota") || nota.includes("caduta")) {
-        rischio = "rischio di caduta dall’alto";
-        norma = "D.Lgs. 81/08, Titolo IV, con particolare riferimento alle opere provvisionali e alle protezioni contro le cadute dall’alto";
-        misuraSpecifica = "installazione o ripristino di parapetti/protezioni collettive idonee, continui e resistenti";
-        prescrizione = "sospendere o limitare l’accesso all’area esposta fino al completo ripristino delle protezioni collettive";
+Trasforma l'appunto del sopralluogo in un verbale tecnico professionale.
+
+REGOLE:
+- usa linguaggio tecnico da CSE;
+- non essere generico;
+- indica rischi concreti;
+- richiama il D.Lgs. 81/08 quando pertinente;
+- scrivi in modo chiaro, prescrittivo e professionale;
+- rispondi SOLO con JSON valido;
+- le chiavi devono essere esattamente: descrizione, misure, correttive.
+
+APPUNTO:
+${appuntoUtente}
+`;
+
+    try {
+        const risposta = await fetch("https://api.openai.com/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + OPENAI_API_KEY,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                model: "gpt-4o-mini",
+                response_format: { type: "json_object" },
+                messages: [
+                    {
+                        role: "system",
+                        content: "Sei un CSE senior italiano. Rispondi solo con JSON valido."
+                    },
+                    {
+                        role: "user",
+                        content: prompt
+                    }
+                ]
+            })
+        });
+
+        const dati = await risposta.json();
+
+        if (!risposta.ok) {
+            throw new Error(dati.error?.message || "Errore OpenAI");
+        }
+
+        return JSON.parse(dati.choices[0].message.content);
+
+    } catch (errore) {
+        console.error("Errore AI:", errore);
+
+        return {
+            descrizione: appuntoUtente,
+            misure: "Errore nel collegamento con OpenAI. Verificare chiave API, credito disponibile o console F12.",
+            correttive: "Riprovare dopo la verifica della configurazione API."
+        };
     }
-
-    if (nota.includes("ponteggio") || nota.includes("trabattello")) {
-        rischio = "rischio di caduta dall’alto e utilizzo non conforme di opera provvisionale";
-        norma = "D.Lgs. 81/08, Titolo IV, in materia di ponteggi, opere provvisionali e lavori in quota";
-        misuraSpecifica = "verifica di montaggio, stabilità, parapetti, fermapiedi, accessi sicuri e corretta configurazione dell’attrezzatura";
-        prescrizione = "vietare l’utilizzo dell’opera provvisionale fino alla regolarizzazione e verifica da parte del preposto";
-    }
-
-    if (nota.includes("quadro") || nota.includes("elettric") || nota.includes("cavo") || nota.includes("prolunga")) {
-        rischio = "rischio elettrico e rischio di contatto diretto/indiretto";
-        norma = "D.Lgs. 81/08, Titolo III, impianti e apparecchiature elettriche di cantiere";
-        misuraSpecifica = "protezione dei cavi, verifica quadri elettrici, differenziali, prese, integrità delle prolunghe e corretto posizionamento";
-        prescrizione = "interdire l’utilizzo delle apparecchiature non conformi fino a verifica e ripristino da parte di personale competente";
-    }
-
-    if (nota.includes("scavo") || nota.includes("trincea")) {
-        rischio = "rischio di seppellimento, caduta nello scavo e interferenza con mezzi operativi";
-        norma = "D.Lgs. 81/08, Titolo IV, attività di scavo e opere di protezione";
-        misuraSpecifica = "protezione dei fronti di scavo, parapetti perimetrali, accessi sicuri, segnalazione e segregazione dell’area";
-        prescrizione = "mettere in sicurezza lo scavo prima della prosecuzione delle attività e impedire l’accesso non autorizzato";
-    }
-
-    if (nota.includes("dpi") || nota.includes("casco") || nota.includes("imbraco") || nota.includes("imbracatura")) {
-        rischio = "rischio derivante da mancato o non corretto utilizzo dei DPI";
-        norma = "D.Lgs. 81/08, Titolo III, uso dei dispositivi di protezione individuale";
-        misuraSpecifica = "verifica disponibilità, idoneità e corretto utilizzo dei DPI previsti per la lavorazione";
-        prescrizione = "richiamare immediatamente il personale e consentire la prosecuzione solo con DPI correttamente indossati";
-    }
-
-    return {
-        descrizione:
-            "Durante il sopralluogo è stata rilevata la seguente non conformità: " +
-            appuntoUtente +
-            ". La condizione riscontrata è riconducibile a " + rischio +
-            " e richiede immediata attenzione da parte dell’impresa esecutrice e dei preposti presenti in cantiere.",
-
-        misure:
-            "Le misure di sicurezza da garantire comprendono: " +
-            misuraSpecifica +
-            ". Il riferimento tecnico-operativo è costituito da " + norma +
-            ", oltre alle prescrizioni contenute nel PSC, nel POS dell’impresa esecutrice e nelle procedure di coordinamento applicabili.",
-
-        correttive:
-            "Si prescrive di " + prescrizione +
-            ". L’impresa dovrà dare evidenza dell’avvenuto adeguamento e mantenere le condizioni di sicurezza per tutta la durata della lavorazione. In caso di permanenza della condizione di rischio, il CSE potrà valutare ulteriori provvedimenti ai sensi dell’art. 92 del D.Lgs. 81/08."
-    };
 }
 
 if (form) {
